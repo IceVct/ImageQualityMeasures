@@ -7,8 +7,8 @@
 *   https://www.mathworks.com/matlabcentral/fileexchange/15652-iris-segmentation-using-daugman-s-integrodifferential-operator?focused=3889799&tab=function
 */
 
-int ci[3];					/* ci:the parametrs[xc,yc,radius] of the limbic boundary */
-int cp[3];					/* cp:the parametrs[xc, yc, radius] of the pupilary boundary */
+PupilIris pupil; // data structure with the pupil features: xc, yc and radius
+PupilIris iris; // data structure with the iris features: xc, yc and radius
 
 
 // Function that finds a x and y to the highest value of maxb, which is the max value of blur for each of the centre points
@@ -371,19 +371,34 @@ void search(Mat image, int rmin, int rmax, int x, int y, string option){
 
 	// Since this code was adapted from matlab, X is equal to Y and Y is equal to X
 	if(option.compare("pupil") == 0){
-		cp[0] = X; // Y
-		cp[1] = Y; // X
-		cp[2] = radius;
+		pupil.centerX = Y; 
+		pupil.centerY = X;
+		pupil.radius = radius;
 	}
 	else if(option.compare("iris") == 0){
-		ci[0] = X; // Y
-		ci[1] = Y; // X
-		ci[2] = radius;
+		iris.centerX = Y;
+		iris.centerY = X;
+		iris.radius = radius;
 	}
 	else {
 		// if is not pupil nor iris
 		return;
 	}
+}
+
+// Function that performs the reflection removal, by performing the erode morphological operation, along with a gausian blur
+// Receives the input/output image, the erode kernel size and the blur kernel size
+Mat removeReflection(Mat inputImage, int erodeKernelSize, int blurKernelSize){
+	Mat outputImage;
+	Mat morphElement = getStructuringElement(MORPH_ELLIPSE, Size(erodeKernelSize, erodeKernelSize)); // creating the erosion morphological element
+
+	// performing the erosion
+	erode(inputImage, outputImage, morphElement);
+
+	// performing the gaussian blur filtering on the image
+	GaussianBlur(outputImage, outputImage, Size(blurKernelSize, blurKernelSize), 2, 2);
+
+	return outputImage;
 }
 
 // Function to search for the centre coordinates of the pupil, iris and both radius
@@ -404,14 +419,10 @@ void thresh(Mat image, double rmin, double rmax, double scale)
 	rmin = rmin * scale;
 	rmax = rmax * scale;
 
-	cvtColor(image, output, CV_BGR2GRAY);			// converting the image to gray scale e using output as the result of this conversion
-
 	// reflection removal
 	// instead of following the matlab implementation, that used the imfill() function
 	// we used the morphologic operation of erose
-	Mat element = getStructuringElement(MORPH_ELLIPSE, Size(7, 7)); // kernel used for the erosion
-	erode(output, output, element);
-	GaussianBlur(output, output, Size(5, 5), 2, 2);
+	output = removeReflection(image, 5, 3);
 
 	output.convertTo(output, CV_64F, 1.0 / 255);		// converting the output to double
 	resize(output, output, Size(), scale, scale);
@@ -463,7 +474,7 @@ void thresh(Mat image, double rmin, double rmax, double scale)
 		centerX = *it;
 		centerY = *it2;
 
-		partiald(&b, &r, blur, &output, centerX, centerY, rmin, rmax, 1.0, 400, "pupil");
+		partiald(&b, &r, blur, &output, centerX, centerY, rmin, rmax, 1.0, 400, "iris");
 
 		maxb.at<double>(*it, *it2) = b;
 		maxrad.at<double>(*it, *it2) = (double)r;
@@ -472,11 +483,17 @@ void thresh(Mat image, double rmin, double rmax, double scale)
 	int x, y;
 	findMaxb(&maxb, &x, &y);
 
-	search(output, rmin, rmax, x, y, "pupil");
+	// searching for the iris boundary
+	search(output, rmin, rmax, x, y, "iris");
+	iris.centerX = iris.centerX/scale;
+	iris.centerY = iris.centerY/scale;
+	iris.radius =  iris.radius/scale;
+	
+	// searching for the pupil boundary, performing a search a 10*10 window around the iris centre
+	search(output, round(0.1*r), round(0.8*r), iris.centerY*scale, iris.centerX*scale, "pupil");
 
 	// adjusting the features acquired for the original scale
-	cp[0] = cp[0] / scale;
-	cp[1] = cp[1] / scale;
-	cp[2] = cp[2] / scale;
-
+	pupil.centerX = pupil.centerX/scale;
+	pupil.centerY = pupil.centerY/scale;
+	pupil.radius = pupil.radius/scale;
 }

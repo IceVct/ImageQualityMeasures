@@ -4,84 +4,45 @@
 
 int main(int argsc, char *argsv[]){
 
-	double rmin, rmax;											// rmin and rmax are the minimum and maximum values of the iris radius 
-	Mat image;
-	bool webCam = true;
+	double rmin = 0.0, rmax = 0.0;											// rmin and rmax are the minimum and maximum values of the iris radius 
+	Mat inputImage;
+	Mat grayScaleImage;
 	int platformSucc = 0;
+	double scale = 0.0;
 
-	if(argsc < 2){
-		cout << "At least two arguments must be passed!" << endl;
+	if(argsc < 3){
+		cout << "At least two arguments must be passed! ./executable input_mage_file scale" << endl;
 		exit(1);
 	}
-	
-	int centerCameraX = 0, centerCameraY = 0, dx = 0, dy = 0;
 
+	scale = strtod(argsv[2], NULL);
+	// reading the input image
+	inputImage = imread(argsv[1], CV_LOAD_IMAGE_UNCHANGED);
+
+	// converting the input image to grayscale
+	cvtColor(inputImage, grayScaleImage, CV_BGR2GRAY);
+
+	// the parameters for searching for the 
 	rmin = 30.00;						
-	rmax = 90.00;						
+	rmax = 90.00;	
 
-	// if the bool variable webCam is true, the images will be aquired by the camera, else, by argument
+	/*****CHECKING QUALITY **/
 
-	VideoCapture capture;
+	/*****SEGMENTATION*****/
+	thresh(grayScaleImage, rmin, rmax, scale);
 
-	Mat frame;
-	capture.open(0);
+	printf("Iris parametes: (%d, %d) %d\n", iris.centerX, iris.centerY, iris.radius);
+	printf("Pupil parametes: (%d, %d) %d\n", pupil.centerX, pupil.centerY, pupil.radius);
 
-	// properties for the camera frame capture
-	capture.set(CV_CAP_PROP_FRAME_WIDTH, 400);
-	capture.set(CV_CAP_PROP_FRAME_HEIGHT, 300);
+	circle(inputImage, Point(iris.centerX, iris.centerY), iris.radius, Scalar(0, 0, 255), 2, 8);
+	circle(inputImage, Point(pupil.centerX, pupil.centerY), pupil.radius, Scalar(0, 255, 0), 2, 8);
 
-    if (!capture.isOpened()){ 
-    	cout << "--(!)Error opening video capture\n" << endl;
-    	return -1; 
-    }    
+	imshow("final output", inputImage);
+	waitKey(0);
 	
-	clock_t start = 0, finish = 0;
-	int counter = 0;
-	centerCameraX = capture.get(CV_CAP_PROP_FRAME_WIDTH)/2;
-	centerCameraY = capture.get(CV_CAP_PROP_FRAME_HEIGHT)/2;
-	printf("camera (%d, %d)\n", centerCameraX, centerCameraY);
+	/*****NORMALIZATION****/
 
-    while (capture.read(frame)){
-
-    	if(counter <= 100){
-    		counter++;
-    	}
-
-    	int64 start = cv::getTickCount();
-        if(frame.empty()){
-            cout << " --(!) No captured frame -- Break!" << endl;
-            break;
-        }
-
-        
-        if(counter == 99){
-        	thresh(frame, rmin, rmax, 0.3);
-        	printf("pupil (%d, %d)\n", cp[1], cp[0]);
-			platformSucc = controlPlatform(cp[1], cp[0], centerCameraX, centerCameraY, argsv[1]);
-			if(platformSucc == ERROR){
-				exit(1);
-			}
-			drawMarker(frame, Point(cp[1], cp[0]), Scalar(0, 255, 0));
-			drawMarker(frame, Point(centerCameraX, centerCameraY), Scalar(0, 0, 255));
-			imshow("pupil", frame);
-			//waitKey(0);
-        }             
-
-        drawMarker(frame, Point(centerCameraX, centerCameraY), Scalar(0, 0, 255));
-        
-        imshow("OUTPUT", frame);
-
-        char c = (char)waitKey(10);
-        if(c == 27) break; // escape
-
-        double fps = cv::getTickFrequency() / (cv::getTickCount() - start);
-    	//cout << "FPS : " << fps << endl;
-    }
-
-    cout << capture.get(CV_CAP_PROP_FRAME_WIDTH) << endl;
-    cout << capture.get(CV_CAP_PROP_FRAME_HEIGHT) << endl;
-	    
-    
+	/*****RECOGNITION******/
 		
 	return 0;
 }

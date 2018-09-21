@@ -19,10 +19,15 @@ using namespace std;
 
 #define PI 3.1416					/* global variable to the PI value*/
 
-/* global variables */
-extern int ci[3];					/* ci:the parametrs[xc,yc,radius] of the limbic boundary */
-extern int cp[3];					/* cp:the parametrs[xc, yc, radius] of the pupilary boundary */
+typedef struct eyeDataStructure{
+    int centerX;
+    int centerY;
+    int radius;
+}PupilIris;
 
+/* global variables */
+extern PupilIris pupil; // data structure with the pupil features: xc, yc and radius
+extern PupilIris iris; // data structure with the iris features: xc, yc and radius
 
 void find(Mat *image, list<int> &vecX, list<int> &vecY);
 void findNan(list<int> &vecX, list<int> &vecY);
@@ -33,6 +38,7 @@ double lineint(Mat image, int centerX, int centerY, int r, int n, string part);
 bool any(vector<double> toBeSearchedVector, double paramValue, string logicComparator);
 void partiald(double *b, int *r, vector<double> &blur, Mat *image, int centerX, int centerY, int rmin, int rmax, float sigma, int n, string part);
 void search(Mat image, int rmin, int rmax, int x, int y, string option);
+Mat removeReflection(Mat inputImage, int erodeKernelSize, int blurKernelSize);
 void thresh(Mat image, double rmin, double rmax, double scale);
 
 
