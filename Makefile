@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/victor/UnB/TCC/Codigos/IrisRecogSys
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -77,6 +66,17 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -111,44 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named eyefinder
+# Target rules for targets named iris_recog
 
 # Build rule for target.
-eyefinder: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 eyefinder
-.PHONY : eyefinder
+iris_recog: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 iris_recog
+.PHONY : iris_recog
 
 # fast build rule for target.
-eyefinder/fast:
-	$(MAKE) -f CMakeFiles/eyefinder.dir/build.make CMakeFiles/eyefinder.dir/build
-.PHONY : eyefinder/fast
-
-src/Functions.o: src/Functions.cpp.o
-
-.PHONY : src/Functions.o
-
-# target to build an object file
-src/Functions.cpp.o:
-	$(MAKE) -f CMakeFiles/eyefinder.dir/build.make CMakeFiles/eyefinder.dir/src/Functions.cpp.o
-.PHONY : src/Functions.cpp.o
-
-src/Functions.i: src/Functions.cpp.i
-
-.PHONY : src/Functions.i
-
-# target to preprocess a source file
-src/Functions.cpp.i:
-	$(MAKE) -f CMakeFiles/eyefinder.dir/build.make CMakeFiles/eyefinder.dir/src/Functions.cpp.i
-.PHONY : src/Functions.cpp.i
-
-src/Functions.s: src/Functions.cpp.s
-
-.PHONY : src/Functions.s
-
-# target to generate assembly for a file
-src/Functions.cpp.s:
-	$(MAKE) -f CMakeFiles/eyefinder.dir/build.make CMakeFiles/eyefinder.dir/src/Functions.cpp.s
-.PHONY : src/Functions.cpp.s
+iris_recog/fast:
+	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/build
+.PHONY : iris_recog/fast
 
 src/Main.o: src/Main.cpp.o
 
@@ -156,7 +129,7 @@ src/Main.o: src/Main.cpp.o
 
 # target to build an object file
 src/Main.cpp.o:
-	$(MAKE) -f CMakeFiles/eyefinder.dir/build.make CMakeFiles/eyefinder.dir/src/Main.cpp.o
+	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Main.cpp.o
 .PHONY : src/Main.cpp.o
 
 src/Main.i: src/Main.cpp.i
@@ -165,7 +138,7 @@ src/Main.i: src/Main.cpp.i
 
 # target to preprocess a source file
 src/Main.cpp.i:
-	$(MAKE) -f CMakeFiles/eyefinder.dir/build.make CMakeFiles/eyefinder.dir/src/Main.cpp.i
+	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Main.cpp.i
 .PHONY : src/Main.cpp.i
 
 src/Main.s: src/Main.cpp.s
@@ -174,8 +147,62 @@ src/Main.s: src/Main.cpp.s
 
 # target to generate assembly for a file
 src/Main.cpp.s:
-	$(MAKE) -f CMakeFiles/eyefinder.dir/build.make CMakeFiles/eyefinder.dir/src/Main.cpp.s
+	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Main.cpp.s
 .PHONY : src/Main.cpp.s
+
+src/Quality.o: src/Quality.cpp.o
+
+.PHONY : src/Quality.o
+
+# target to build an object file
+src/Quality.cpp.o:
+	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Quality.cpp.o
+.PHONY : src/Quality.cpp.o
+
+src/Quality.i: src/Quality.cpp.i
+
+.PHONY : src/Quality.i
+
+# target to preprocess a source file
+src/Quality.cpp.i:
+	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Quality.cpp.i
+.PHONY : src/Quality.cpp.i
+
+src/Quality.s: src/Quality.cpp.s
+
+.PHONY : src/Quality.s
+
+# target to generate assembly for a file
+src/Quality.cpp.s:
+	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Quality.cpp.s
+.PHONY : src/Quality.cpp.s
+
+src/Segmentation.o: src/Segmentation.cpp.o
+
+.PHONY : src/Segmentation.o
+
+# target to build an object file
+src/Segmentation.cpp.o:
+	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Segmentation.cpp.o
+.PHONY : src/Segmentation.cpp.o
+
+src/Segmentation.i: src/Segmentation.cpp.i
+
+.PHONY : src/Segmentation.i
+
+# target to preprocess a source file
+src/Segmentation.cpp.i:
+	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Segmentation.cpp.i
+.PHONY : src/Segmentation.cpp.i
+
+src/Segmentation.s: src/Segmentation.cpp.s
+
+.PHONY : src/Segmentation.s
+
+# target to generate assembly for a file
+src/Segmentation.cpp.s:
+	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Segmentation.cpp.s
+.PHONY : src/Segmentation.cpp.s
 
 # Help Target
 help:
@@ -183,15 +210,18 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... eyefinder"
-	@echo "... src/Functions.o"
-	@echo "... src/Functions.i"
-	@echo "... src/Functions.s"
+	@echo "... edit_cache"
+	@echo "... iris_recog"
 	@echo "... src/Main.o"
 	@echo "... src/Main.i"
 	@echo "... src/Main.s"
+	@echo "... src/Quality.o"
+	@echo "... src/Quality.i"
+	@echo "... src/Quality.s"
+	@echo "... src/Segmentation.o"
+	@echo "... src/Segmentation.i"
+	@echo "... src/Segmentation.s"
 .PHONY : help
 
 

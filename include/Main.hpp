@@ -2,6 +2,7 @@
 #ifndef MAIN
 #define MAIN
 
-#include "Functions.hpp"
+#include "Segmentation.hpp"
+#include "Quality.hpp"
 
 #endif /* MAIN */

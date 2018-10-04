@@ -1,4 +1,4 @@
-#include "Functions.hpp"
+#include "Segmentation.hpp"
 
 /*
 *	THIS CODE WAS ADAPTED FROM Anirudh SK matlab implementation	
@@ -407,8 +407,7 @@ Mat removeReflection(Mat inputImage, int erodeKernelSize, int blurKernelSize){
 // their immediate(3*s) neighbourhood these points serve as the possible centre coordinates for the iris.Once the iris has 
 // been detected(using Daugman's method);the pupil's centre coordinates are found by searching a 10*10 neighbourhood around 
 // the iris centre and varying the radius until a maximum is found (using  Daugman's integrodifferential operator)
-void thresh(Mat image, double rmin, double rmax, double scale)
-{
+void segmentIris(Mat image, double rmin, double rmax, double scale){
 
 	Mat output;							// image with the pupil center detected
 	double M = 1.0;						// minimum value 

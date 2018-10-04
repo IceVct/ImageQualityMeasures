@@ -27,18 +27,19 @@ int main(int argsc, char *argsv[]){
 	rmax = 90.00;	
 
 	/*****CHECKING QUALITY **/
-
+	double q = dsmiQuality(grayScaleImage, false);
+	cout << "Q = " << q << endl;
 	/*****SEGMENTATION*****/
-	thresh(grayScaleImage, rmin, rmax, scale);
+	// segmentIris(grayScaleImage, rmin, rmax, scale);
 
-	printf("Iris parametes: (%d, %d) %d\n", iris.centerX, iris.centerY, iris.radius);
-	printf("Pupil parametes: (%d, %d) %d\n", pupil.centerX, pupil.centerY, pupil.radius);
+	// printf("Iris parametes: (%d, %d) %d\n", iris.centerX, iris.centerY, iris.radius);
+	// printf("Pupil parametes: (%d, %d) %d\n", pupil.centerX, pupil.centerY, pupil.radius);
 
-	circle(inputImage, Point(iris.centerX, iris.centerY), iris.radius, Scalar(0, 0, 255), 2, 8);
-	circle(inputImage, Point(pupil.centerX, pupil.centerY), pupil.radius, Scalar(0, 255, 0), 2, 8);
+	// circle(inputImage, Point(iris.centerX, iris.centerY), iris.radius, Scalar(0, 0, 255), 2, 8);
+	// circle(inputImage, Point(pupil.centerX, pupil.centerY), pupil.radius, Scalar(0, 255, 0), 2, 8);
 
-	imshow("final output", inputImage);
-	waitKey(0);
+	// imshow("final output", inputImage);
+	// waitKey(0);
 	
 	/*****NORMALIZATION****/
 

@@ -114,7 +114,7 @@ CMAKE_OBJCOPY:FILEPATH=/usr/bin/objcopy
 CMAKE_OBJDUMP:FILEPATH=/usr/bin/objdump
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=eyefinder
+CMAKE_PROJECT_NAME:STATIC=iris_recog
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -176,6 +176,12 @@ eyefinder_BINARY_DIR:STATIC=/home/victor/UnB/TCC/Codigos/IrisRecogSys
 
 //Value Computed by CMake
 eyefinder_SOURCE_DIR:STATIC=/home/victor/UnB/TCC/Codigos/IrisRecogSys
+
+//Value Computed by CMake
+iris_recog_BINARY_DIR:STATIC=/home/victor/UnB/TCC/Codigos/IrisRecogSys
+
+//Value Computed by CMake
+iris_recog_SOURCE_DIR:STATIC=/home/victor/UnB/TCC/Codigos/IrisRecogSys
 
 
 ########################

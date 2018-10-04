@@ -60,39 +60,39 @@ CMAKE_SOURCE_DIR = /home/victor/UnB/TCC/Codigos/IrisRecogSys
 CMAKE_BINARY_DIR = /home/victor/UnB/TCC/Codigos/IrisRecogSys
 
 #=============================================================================
-# Target rules for target CMakeFiles/eyefinder.dir
+# Target rules for target CMakeFiles/iris_recog.dir
 
 # All Build rule for target.
-CMakeFiles/eyefinder.dir/all:
-	$(MAKE) -f CMakeFiles/eyefinder.dir/build.make CMakeFiles/eyefinder.dir/depend
-	$(MAKE) -f CMakeFiles/eyefinder.dir/build.make CMakeFiles/eyefinder.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/victor/UnB/TCC/Codigos/IrisRecogSys/CMakeFiles --progress-num=1,2,3 "Built target eyefinder"
-.PHONY : CMakeFiles/eyefinder.dir/all
+CMakeFiles/iris_recog.dir/all:
+	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/depend
+	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/victor/UnB/TCC/Codigos/IrisRecogSys/CMakeFiles --progress-num=1,2,3,4 "Built target iris_recog"
+.PHONY : CMakeFiles/iris_recog.dir/all
 
 # Include target in all.
-all: CMakeFiles/eyefinder.dir/all
+all: CMakeFiles/iris_recog.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/eyefinder.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/victor/UnB/TCC/Codigos/IrisRecogSys/CMakeFiles 3
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/eyefinder.dir/all
+CMakeFiles/iris_recog.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/victor/UnB/TCC/Codigos/IrisRecogSys/CMakeFiles 4
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/iris_recog.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/victor/UnB/TCC/Codigos/IrisRecogSys/CMakeFiles 0
-.PHONY : CMakeFiles/eyefinder.dir/rule
+.PHONY : CMakeFiles/iris_recog.dir/rule
 
 # Convenience name for target.
-eyefinder: CMakeFiles/eyefinder.dir/rule
+iris_recog: CMakeFiles/iris_recog.dir/rule
 
-.PHONY : eyefinder
-
-# clean rule for target.
-CMakeFiles/eyefinder.dir/clean:
-	$(MAKE) -f CMakeFiles/eyefinder.dir/build.make CMakeFiles/eyefinder.dir/clean
-.PHONY : CMakeFiles/eyefinder.dir/clean
+.PHONY : iris_recog
 
 # clean rule for target.
-clean: CMakeFiles/eyefinder.dir/clean
+CMakeFiles/iris_recog.dir/clean:
+	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/clean
+.PHONY : CMakeFiles/iris_recog.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/iris_recog.dir/clean
 
 .PHONY : clean
 

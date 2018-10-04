@@ -1,6 +1,6 @@
 #pragma once
-#ifndef FUNCTIONS_HPP
-#define FUNCTIONS_HPP
+#ifndef SEGMENTATION_HPP
+#define SEGMENTATION_HPP
 
 #include <opencv2/opencv.hpp>
 #include <iostream>
@@ -39,7 +39,7 @@ bool any(vector<double> toBeSearchedVector, double paramValue, string logicCompa
 void partiald(double *b, int *r, vector<double> &blur, Mat *image, int centerX, int centerY, int rmin, int rmax, float sigma, int n, string part);
 void search(Mat image, int rmin, int rmax, int x, int y, string option);
 Mat removeReflection(Mat inputImage, int erodeKernelSize, int blurKernelSize);
-void thresh(Mat image, double rmin, double rmax, double scale);
+void segmentIris(Mat image, double rmin, double rmax, double scale);
 
 
-#endif /* FUNCTIONS_HPP */
+#endif /* SEGMENTATION_HPP */
