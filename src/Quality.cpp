@@ -14,198 +14,136 @@ float computeNeighboorsAverage(vector<float> inputVector){
 
 
 // Function that computes the reference pixel neighboors variance
-float computeNeighboorsVariance(vector<float> inputVector){
+float computeNeighboorsVariance(vector<float> inputVector, float neighboorsAverage){
     float variance = 0.0;
-    float average = computeNeighboorsAverage(inputVector); // computing the vector average
     int vectorSize = inputVector.size();
 
     for(int i = 0; i < vectorSize; i++){
-        variance += ((inputVector[i] - average)*(inputVector[i] - average))/vectorSize;
+        variance += ((inputVector[i] - neighboorsAverage)*(inputVector[i] - neighboorsAverage))/vectorSize;
     }
 
     return variance;
 }
 
+// Functio that finds all the local maximas from the input image, using the dilate operation with a kernel
+// Returns a vector with the location and the local maximas and a binary matrix, where 1 are the local maximas and 0 not
+// The return max, will already exclude the borders
+void findLocalMaximas(Mat inputImage, Mat *s1SignStatistics, Mat *maxDifferences, vector<LocalMaxima> *localMaximas){
+    Mat maximas, minimas, darker, brighter, maxDiffs;
+    int rows = inputImage.rows, cols = inputImage.cols;
+	Mat tempS1 = Mat(rows - 2, cols - 2, CV_32S, Scalar(0));
+	Mat tempMaxDiffs = Mat(rows - 2, cols - 2, CV_32F, 0.0);
+    LocalMaxima tmpLocalMaxima;
+    vector<LocalMaxima> tempLocalMaximas;
+
+	Mat morphElement = getStructuringElement(MORPH_ELLIPSE, Size(3, 3));
+
+    // Find max intensity difference from center to brighter and darker images.
+	dilate(inputImage, maximas, morphElement);
+    erode(inputImage, minimas, morphElement);
+
+    // Find the max difference regardless whether brighter or darker
+    absdiff(maximas, inputImage, brighter);
+    absdiff(inputImage, minimas, darker);
+
+    max(brighter, darker, maxDiffs);
+	
+	for (int i = 1; i < rows - 1; i++)
+		for (int j = 1; j < cols - 1; j++){
+            // storing the maximum differences
+            tempMaxDiffs.at<float>(i - 1, j - 1) = maxDiffs.at<float>(i, j);
+
+            if (abs(inputImage.at<float>(i, j) - maximas.at<float>(i, j)) < 0.000001){
+                tempS1.at<int>(i - 1, j - 1) = (float) 1.0;
+                tmpLocalMaxima.x = i;
+                tmpLocalMaxima.y = j;
+                tempLocalMaximas.push_back(tmpLocalMaxima);
+            }	
+		}
+    
+    // return values
+    *s1SignStatistics = tempS1;
+    *maxDifferences = tempMaxDiffs;
+    *localMaximas = tempLocalMaximas;
+}
+
 // Function that computes the threshold T, according to the the Jenadeleh et al "Realtime Quality Assessment of Iris Biometrics under Visible Light", 
 // 2018 CVPR paper rules
-float computeThresholdT(Mat inputImage, bool considerAllNeighboors){
-    float threshold = 0.0;
-    float neighboorsAverage = 0.0;
+void computeThresholdT(Mat inputImage, Mat *neighborhoodVariance, vector<LocalMaxima> localMaximas, float *threshold){
+    Scalar neighboorsAverage, neighboorsVariance;
+    float mean = 0.0, variance = 0.0;
+    float t = 0.0;
     int rows = inputImage.rows, cols = inputImage.cols;
-    int nPixels = rows*cols;
-    double minDifference = 0.0, maxDifference = 0.0;
+    Mat tempNeighboorsVariance(rows - 2, cols - 2, CV_32F, 0.0);
     vector<float> neighboors(4);
-    if(considerAllNeighboors == true)
-        neighboors.resize(8);
+    int row = 0, col = 0;
+    int amountMaximas = localMaximas.size();
 
-    // looping through the image and computing the average of the max differences of each pixel from the image
-    for(int i = 0; i < rows; i++){
-        for(int j = 0; j < cols; j++){
-            // all pixels not in the borders
-            if((i > 0 && i < rows - 1) && (j > 0 && j < cols - 1)){
-                // now checking if its going to consider pixels 4 or 8 neighboors
-                // inserting the neighboors in the neighboors vector
-                if(considerAllNeighboors == false){
-                    // computing the differences from the reference pixel from its neighboors
-                    neighboors[0] = inputImage.at<float>(i, j) - inputImage.at<float>(i - 1, j); // top neighboor
-                    neighboors[1] = inputImage.at<float>(i, j) - inputImage.at<float>(i + 1, j); // down neighboor
-                    neighboors[2] = inputImage.at<float>(i, j) - inputImage.at<float>(i, j + 1); // right neighboor
-                    neighboors[3] = inputImage.at<float>(i, j) - inputImage.at<float>(i, j - 1); // left neighboor
+    for(int i = 0; i < amountMaximas; i++){
+        row = localMaximas[i].x;
+        col = localMaximas[i].y;
 
-                    // computing the neighboors average
-                    // neighboorsAverage = computeNeighboorsAverage(neighboors);
+        // storing the neighboors
+        neighboors[0] = abs(inputImage.at<float>(row, col) - inputImage.at<float>(row - 1, col)); // top neighboor
+        neighboors[1] = abs(inputImage.at<float>(row, col) - inputImage.at<float>(row + 1, col)); // down neighboor
+        neighboors[2] = abs(inputImage.at<float>(row, col) - inputImage.at<float>(row, col + 1)); // right neighboor
+        neighboors[3] = abs(inputImage.at<float>(row, col) - inputImage.at<float>(row, col - 1)); // left neighboor
 
-                    // // computing the maximum and minimum differences
-                    minMaxLoc(neighboors, &minDifference, &maxDifference);
+        // computing the neighborhood average and variance
+        meanStdDev(neighboors, neighboorsAverage, neighboorsVariance);
+        mean = neighboorsAverage.val[0];
+        variance = neighboorsVariance.val[0]*neighboorsVariance.val[0];
+        tempNeighboorsVariance.at<float>(row - 1, col - 1) = variance;
 
-                    threshold += maxDifference/nPixels;
-
-                }else{
-                    // computing the differences from the reference pixel from its neighboors
-                    neighboors[0] = inputImage.at<float>(i, j) - inputImage.at<float>(i - 1, j); // top neighboor
-                    neighboors[1] = inputImage.at<float>(i, j) - inputImage.at<float>(i + 1, j); // down neighboor
-                    neighboors[2] = inputImage.at<float>(i, j) - inputImage.at<float>(i, j + 1); // right neighboor
-                    neighboors[3] = inputImage.at<float>(i, j) - inputImage.at<float>(i, j - 1); // left neighboor
-                    neighboors[4] = inputImage.at<float>(i, j) - inputImage.at<float>(i - 1, j - 1); // top left neighboor
-                    neighboors[5] = inputImage.at<float>(i, j) - inputImage.at<float>(i + 1, j - 1); // down left neighboor
-                    neighboors[6] = inputImage.at<float>(i, j) - inputImage.at<float>(i - 1, j + 1); // top right neighboor
-                    neighboors[7] = inputImage.at<float>(i, j) - inputImage.at<float>(i + 1, j + 1); // down right neighboor
-
-                    // computing the neighboors average
-                    // neighboorsAverage = computeNeighboorsAverage(neighboors);
-
-                    // // computing the maximum and minimum differences
-                    minMaxLoc(neighboors, &minDifference, &maxDifference);
-
-                    threshold += maxDifference/nPixels;
-
-                }
-                minDifference = 0.0;
-                neighboorsAverage = 0.0;
-                maxDifference = 0.0;
-            }
-        }
+        t += mean/amountMaximas;
     }
 
-    return threshold;
+    *threshold = t;
+    *neighborhoodVariance = tempNeighboorsVariance;
 }
 
 // Function that computes the DSMI quality measure
 // The methods follows the Jenadeleh et al "Realtime Quality Assessment of Iris Biometrics under Visible Light", 2018 CVPR paper
 // Inputs: inputImage (input image), considerAllNeighboors (a flag for considering 4 or 8 neighboors, true 8 and false 4)
 // Output: the dsmi quality measure
-float dsmiQuality(Mat inputImage, bool considerAllNeighboors){
-    float qualityMeasured = 0.0;
+double dsmiQuality(Mat inputImage, bool considerAllNeighboors){
+    double qualityMeasured = 0.0;
     Mat normalizedImage;
-    int rows = inputImage.rows, cols = inputImage.cols;
-    int nPixels = rows*cols;
-    int S = 0; // S array from the paper
+    int nPixels = 0;
     int s1SignStatistics = 0, s2MagnitudeStatistics = 0; // S1 and S2 arrays from the paper, which represents the sign and magnitudes patterns
-    double localMaxima = 0.0, localMinima = 0.0;
-    double maxDifference = 0.0, minDifference = 0.0; 
-    float neighboorVariance = 0.0;
-    vector<float> neighboorsSign(4), neighboorsMagnitude(4);
-    if(considerAllNeighboors == true){
-        neighboorsSign.resize(8);
-        neighboorsMagnitude.resize(8);
-    }
-    double threshold = 0.0;
+    Mat neighboorsVariance;
+    Mat S1, S2, S; // S1, S2 and S array from the paper
+    Mat maxDifferences;
+    Mat tempQuality;
+    vector<LocalMaxima> localMaximas;
+    float T = 0.0;
+    int amountMaximas = 0;
 
     // computing the normalized image
     normalize(inputImage, normalizedImage, 0, 1, NORM_MINMAX, CV_32F);
 
+    int rows = inputImage.rows, cols = inputImage.cols;
+    nPixels = rows*cols;
+
+    // computing all the local maximas and maximum differences from the normalized image
+    findLocalMaximas(normalizedImage, &S1, &maxDifferences, &localMaximas);
+
     // computing the threshold for the magnitude
-    threshold = computeThresholdT(normalizedImage, considerAllNeighboors);
+    computeThresholdT(normalizedImage, &neighboorsVariance, localMaximas, &T);
 
-    // looping through the image and computing the sign and magnitudes arrays
-    for(int i = 0; i < rows; i++){
-        for(int j = 0; j < cols; j++){
-            // all pixels not in the borders
-            if((i > 0 && i < rows - 1) && (j > 0 && j < cols - 1)){
-                // now checking if its going to consider pixels 4 or 8 neighboors
-                // inserting the neighboors in the neighboors vector
-                if(considerAllNeighboors == false){
-                    // Sign features
-                    neighboorsSign[0] = normalizedImage.at<float>(i - 1, j); // top neighboor
-                    neighboorsSign[1] = normalizedImage.at<float>(i + 1, j); // down neighboor
-                    neighboorsSign[2] = normalizedImage.at<float>(i, j + 1); // right neighboor
-                    neighboorsSign[3] = normalizedImage.at<float>(i, j - 1); // left neighboor
+    // Comparing the max difference of each pixel to the threshold 
+    threshold(maxDifferences, S2, T, 1, THRESH_BINARY_INV);
+    S2.convertTo(S2, CV_32S);
 
-                    // computing the local maxima and local minima
-                    minMaxLoc(neighboorsSign, &localMinima, &localMaxima);
-                    // printf("TOP %f, DOWN %f RIGHT %f LEFT %f REFERENCE %f Maxima %f\n", neighboorsSign[0], neighboorsSign[1], neighboorsSign[2], neighboorsSign[3], normalizedImage.at<float>(i, j), localMaxima);
+    // Computing the statistics of the coincidence pattern of the sign S1 and magnitude S2
+    S = S1 & S2;
+    S.convertTo(S, CV_32F);
 
-                    // setting the S1 value according to the local maxima
-                    s1SignStatistics = normalizedImage.at<float>(i, j) > localMaxima ? 1 : 0;
-                    
-                    // Magnitude features
-                    // computing the differences from the reference pixel from its neighboors
-                    neighboorsMagnitude[0] = normalizedImage.at<float>(i, j) - normalizedImage.at<float>(i - 1, j); // top neighboor
-                    neighboorsMagnitude[1] = normalizedImage.at<float>(i, j) - normalizedImage.at<float>(i + 1, j); // down neighboor
-                    neighboorsMagnitude[2] = normalizedImage.at<float>(i, j) - normalizedImage.at<float>(i, j + 1); // right neighboor
-                    neighboorsMagnitude[3] = normalizedImage.at<float>(i, j) - normalizedImage.at<float>(i, j - 1); // left neighboor
+    // in order to avoid division by 0, adding to each element of the variance matrix the value 0.00025
+    neighboorsVariance += 0.00025;
 
-                    // computing the maximum and minimum differences
-                    minMaxLoc(neighboorsMagnitude, &minDifference, &maxDifference);
-
-                    // setting the S2 value according to the maximum difference and the threshold computed for the image
-                    s2MagnitudeStatistics = threshold > maxDifference ? 1 : 0;
-
-                }else{
-                    // Sign features
-                    neighboorsSign[0] = normalizedImage.at<float>(i - 1, j); // top neighboor
-                    neighboorsSign[1] = normalizedImage.at<float>(i + 1, j); // down neighboor
-                    neighboorsSign[2] = normalizedImage.at<float>(i, j + 1); // right neighboor
-                    neighboorsSign[3] = normalizedImage.at<float>(i, j - 1); // left neighboor
-                    neighboorsSign[4] = normalizedImage.at<float>(i - 1, j - 1); // top left neighboor
-                    neighboorsSign[5] = normalizedImage.at<float>(i + 1, j - 1); // down left neighboor
-                    neighboorsSign[6] = normalizedImage.at<float>(i - 1, j + 1); // top right neighboor
-                    neighboorsSign[7] = normalizedImage.at<float>(i + 1, j + 1); // down right neighboor
-
-                    // computing the local maxima and local minima
-                    minMaxLoc(neighboorsSign, &localMinima, &localMaxima);
-
-                    // setting the S1 value according to the local maxima
-                    s1SignStatistics = normalizedImage.at<float>(i, j) > localMaxima ? 1 : 0;
-                    
-                    // Magnitude features
-                    // computing the differences from the reference pixel from its neighboors
-                    neighboorsMagnitude[0] = normalizedImage.at<float>(i, j) - normalizedImage.at<float>(i - 1, j); // top neighboor
-                    neighboorsMagnitude[1] = normalizedImage.at<float>(i, j) - normalizedImage.at<float>(i + 1, j); // down neighboor
-                    neighboorsMagnitude[2] = normalizedImage.at<float>(i, j) - normalizedImage.at<float>(i, j + 1); // right neighboor
-                    neighboorsMagnitude[3] = normalizedImage.at<float>(i, j) - normalizedImage.at<float>(i, j - 1); // left neighboor
-                    neighboorsMagnitude[4] = normalizedImage.at<float>(i, j) - normalizedImage.at<float>(i - 1, j - 1); // top left neighboor
-                    neighboorsMagnitude[5] = normalizedImage.at<float>(i, j) - normalizedImage.at<float>(i + 1, j - 1); // down left neighboor
-                    neighboorsMagnitude[6] = normalizedImage.at<float>(i, j) - normalizedImage.at<float>(i - 1, j + 1); // top right neighboor
-                    neighboorsMagnitude[7] = normalizedImage.at<float>(i, j) - normalizedImage.at<float>(i + 1, j + 1); // down right neighboor
-
-                    // computing the maximum and minimum differences
-                    minMaxLoc(neighboorsMagnitude, &minDifference, &maxDifference);
-
-                    // setting the S2 value according to the maximum difference and the threshold computed for the image
-                    s2MagnitudeStatistics = threshold > maxDifference ? 1 : 0;
-                }
-
-                // evaluating the overall statistics S value based on the S1 and S2 values
-                S = s1SignStatistics && s2MagnitudeStatistics ? 1 : 0;
-                // printf("S = %d, S1 = %d, S2 = %d\n", S, s1SignStatistics, s2MagnitudeStatistics);
-
-                // computing the reference pixel neighboorhood variance
-                neighboorVariance = computeNeighboorsVariance(neighboorsSign);
-
-                // computing the quality measure
-                qualityMeasured += (float)S/(neighboorVariance + 0.00025); // 0.00025 taken from the paper
-
-                // reseting the variables used
-                localMaxima = 0.0;
-                localMinima = 0.0;
-                maxDifference = 0.0;
-                minDifference = 0.0;
-                neighboorVariance = 0.0;
-            }
-        }
-    }
-    qualityMeasured /= nPixels;
+    tempQuality = S/neighboorsVariance;
+    qualityMeasured = sum(tempQuality)[0]/nPixels;
     
     // normalizing the quality measured from [0,infinite) to [0, 1)]
     return 1 - exp(-0.01*qualityMeasured); // 0.01 taken from the paper

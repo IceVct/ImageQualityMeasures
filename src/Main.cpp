@@ -23,17 +23,15 @@ int main(int argsc, char *argsv[]){
 	cvtColor(inputImage, grayScaleImage, CV_BGR2GRAY);
 
 	// the parameters for searching for the 
-	rmin = 30.00;						
+	// miche 50 200
+	rmin = 20.00;						
 	rmax = 90.00;	
 
 	/*****CHECKING QUALITY **/
 	double q = dsmiQuality(grayScaleImage, false);
-	cout << "Q = " << q << endl;
+	cout << q;
 	/*****SEGMENTATION*****/
 	// segmentIris(grayScaleImage, rmin, rmax, scale);
-
-	// printf("Iris parametes: (%d, %d) %d\n", iris.centerX, iris.centerY, iris.radius);
-	// printf("Pupil parametes: (%d, %d) %d\n", pupil.centerX, pupil.centerY, pupil.radius);
 
 	// circle(inputImage, Point(iris.centerX, iris.centerY), iris.radius, Scalar(0, 0, 255), 2, 8);
 	// circle(inputImage, Point(pupil.centerX, pupil.centerY), pupil.radius, Scalar(0, 255, 0), 2, 8);

@@ -36,34 +36,32 @@ vector<double> conv(vector<double> A, vector<double> B, string option){
 	int nconv = 0;
 	int i = 0, j = 0, i1 = 0;
 	double tmp;
+	int aSize = A.size(), bSize = B.size();
 
 	//allocated convolution array
-	nconv = A.size() + B.size() - 1;
-	vector<double> C(nconv);
+	nconv = aSize + bSize - 1;
+	vector<double> C(nconv), tempC(aSize);
 
 	//convolution process
+	int count = 0;
 	for (i = 0; i<nconv; i++){
 		i1 = i;
 		tmp = 0.0;
-		for (j = 0; j<B.size(); j++){
-			if (i1 >= 0 && i1<A.size()) tmp = tmp + (A[i1] * B[j]);
-
+		for (j = 0; j<bSize; j++){
+			if (i1 >= 0 && i1<aSize) tmp = tmp + (A[i1] * B[j]);
 			i1 -= 1;
 			C[i] = tmp;
+		}
+		// computing the temp C vector if the same string is passed as the option argument
+		if(i >= bSize/2 && i < (nconv - bSize)/2 && option.compare("same") == 0){
+			tempC[count] = C[i];
+			count++;
 		}
 	}
 
 	// if the option argument is the string "same", creates a new array, else, returns the C vector itself
 	if(option.compare("same") == 0){
-		int count = 0; // used as index in tmpC array creation
-		vector<double> tmpC(A.size()); // creates a temporary array with A's same size
-		for (int i = 0; i < nconv; i++) {
-			if (i >= B.size() / 2 && i < nconv - B.size() / 2) {
-				tmpC[count] = C[i];
-				count++; // it sums count only in this conditional
-			}
-		}
-		return tmpC;
+		return tempC;
 	}
 
 	//returns convolution array
@@ -73,12 +71,12 @@ vector<double> conv(vector<double> A, vector<double> B, string option){
 
 // Function that find the pixels close to the borders-- lines 61 to 63 in matlab code
 void findCloseBorder(list<int> &vecX, list<int> &vecY, int rmin, int rmax, int rows, int cols) {
+	list<int>::iterator vecXEnd = vecX.end(), vecYEnd = vecY.end();
 
-	for (list<int>::iterator it = vecX.begin(), it2 = vecY.begin(); it != vecX.end() && it2 != vecY.end(); it++, it2++){
+	for (list<int>::iterator it = vecX.begin(), it2 = vecY.begin(); it != vecXEnd && it2 != vecYEnd; it++, it2++){
 		// if any of the x or y values are close to the borders, it saves the index in the auxiliar list
 		if (*it <= (rmin - 1) || *it2 <= (rmin - 1) || *it > ((rows - rmin) - 1) ||
 			*it2 > ((cols - rmin) - 1)){
-
 			// Deleting the pixel coordinates that are too close to the borders, setting their values to -1
 			// and then erasing them from the list
 			*it = -1;
@@ -90,24 +88,21 @@ void findCloseBorder(list<int> &vecX, list<int> &vecY, int rmin, int rmax, int r
 
 // Function that looks for NaN values at the vecX and vecY vectors and deletes them -- lines 57 to 59 in matlab code
 void findNan(list<int> &vecX, list<int> &vecY) {
-
 	vecX.remove(-1);
 	vecY.remove(-1);
-
 }
 
 
 // Function that looks for pixel values that are lesser than 0.5 at the image and store them at the vecX and vecY vectors
 // -- find(I < 0.5) from matlab
 void find(Mat *image, list<int> &vecX, list<int> &vecY) {
+	int rows = (*image).rows, cols = (*image).cols;
 
-	Mat im_aux = *image;
-
-	for (int c = 0; c < im_aux.cols; c++)
+	for (int c = 0; c < cols; c++)
 	{
-		for (int r = 0; r < im_aux.rows; r++)
+		for (int r = 0; r < rows; r++)
 		{
-			if (im_aux.at<double>(r, c) < 0.5)
+			if ((*image).at<double>(r, c) < 0.5)
 			{
 				// storing the values in the end of each list
 				vecX.push_back(r);
@@ -255,8 +250,6 @@ void partiald(double *b, int *r, vector<double> &blur, Mat *image, int centerX, 
 	vector<int> R;				// R from matlab code
 	vector<double> L;			// L from matlab code
 	vector<double> D;			// D from matlab code
-	vector<double> f;			// f from matlab code
-
 
 	// storing on the vector R the sum of rmin with each value between the rmax - rmin range
 	for (int i = 0; i <= (rmax - rmin); i++) { R.push_back(rmin + i); }		/* line 23 from matlab */
@@ -287,43 +280,41 @@ void partiald(double *b, int *r, vector<double> &blur, Mat *image, int centerX, 
 
 	// lines 38 to 42 from matlab
 	// generating the convolution kernel f
-	if (sigma == 1.0)
+	vector<double> f(5);			// f from matlab code
+	Mat gaussianKernel;
+	if (sigma == -1.0)
 	{
-		for (int i = 0; i < 7; i++) { f.push_back(1.0 / 7.0); }
+		f.resize(7);
+		for (int i = 0; i < 7; i++) { f[i] = 1.0 / 7.0; }
 	}
 	else
 	{
-		f.push_back(0.0003);	f.push_back(0.1065);
-		f.push_back(0.7866);	f.push_back(0.1065);
-		f.push_back(0.0003);
+		gaussianKernel = getGaussianKernel(5, sigma, CV_64F);
+		if(gaussianKernel.isContinuous()){
+			for(int i = 0; i < 5; i++){
+				f[i] = gaussianKernel.at<double>(i);
+			}
+		}
 	}
 
 	// calling the convolution function, using f as kernel
 	blur = conv(D, f, "same");
 
+	int blurSize = blur.size();
 	// computing the absolute value of each value in the convoluted vector blur
-	for (int i = 0; i < blur.size(); i++)
-	{
+	for (int i = 0; i < blur.size(); i++){
 		blur[i] = abs(blur[i]);
 	}
 
 	// lines 46 to 48 from matlab
 	// it computes the largest number in the range passed as argument
-	*b = *max_element(blur.begin(), blur.end());
-
-	// loop for finding the index with the largest value of the convoluted blur vector
-	for (int i = 0; i < blur.size(); i++)
-	{
-		if (blur[i] == *b)
-		{
-			p = i;
-			break;
-		}
-	}
+	double maxValue = 0.0;
+	Point maxLocation;
+	minMaxLoc(blur, NULL, &maxValue, NULL, &maxLocation);
 
 	// computes the blurred partial derivative
-	*r = R[p];
-	*b = blur[p];
+	*r = R[maxLocation.x];
+	*b = maxValue;
 
 }
 // Function to detect the pupil or iris boundary it searches a certain subset of the image with a given
@@ -355,14 +346,19 @@ void search(Mat image, int rmin, int rmax, int x, int y, string option){
 		for (int j = y - 5; j <= y + 5; j++) {
 			centerX = i;
 			centerY = j;
-			partiald(&b, &r, blur, &image, centerX, centerY, rmin, rmax, sigma, 600, option);
+			partiald(&b, &r, blur, &image, centerX, centerY, rmin, rmax, sigma, 200, option);
 			maxrad.at<double>(i, j) = (double)r;
 			maxb.at<double>(i, j) = b;
 		}
 	}
 	// lines 30 and 31 from matlab
 	int X = 0, Y = 0; // vai receber o resultado da funcao findMaxb
+	double maxValue = 0.0;
+	Point maxLocation;
+	// minMaxLoc(maxb, NULL, &maxValue, NULL, &maxLocation);
 	findMaxb(&maxb, &X, &Y);
+	// X = maxLocation.y;
+	// Y = maxLocation.x;
 	radius = maxrad.at<double>(X - 1, Y - 1);
 
 	// ci stores values related to iris and cp to pupil
@@ -417,7 +413,7 @@ void segmentIris(Mat image, double rmin, double rmax, double scale){
 	int centerX = 0, centerY = 0; // variables for the x,y coordinates of the pupil centre
 	rmin = rmin * scale;
 	rmax = rmax * scale;
-
+	
 	// reflection removal
 	// instead of following the matlab implementation, that used the imfill() function
 	// we used the morphologic operation of erose
@@ -466,20 +462,23 @@ void segmentIris(Mat image, double rmin, double rmax, double scale){
 	Mat maxb = Mat::zeros(rows, cols, CV_64F);			// line 68 from matlab 
 	Mat maxrad = Mat::zeros(rows, cols, CV_64F);		// line 69 from matlab 
 
-
 	// implementation of the lines 72 to 76 from matlab
 	for (list<int>::iterator it = vecX.begin(), it2 = vecY.begin(); it != vecX.end() && it2 != vecY.end(); it++, it2++){
 
 		centerX = *it;
 		centerY = *it2;
 
-		partiald(&b, &r, blur, &output, centerX, centerY, rmin, rmax, 1.0, 400, "iris");
+		partiald(&b, &r, blur, &output, centerX, centerY, rmin, rmax, -1.0, 200, "iris");
 
 		maxb.at<double>(*it, *it2) = b;
 		maxrad.at<double>(*it, *it2) = (double)r;
 	}
 
 	int x, y;
+	Point maxLocation;
+	// minMaxLoc(maxb, NULL, NULL, NULL, &maxLocation);
+	// x = maxLocation.y;
+	// y = maxLocation.x;
 	findMaxb(&maxb, &x, &y);
 
 	// searching for the iris boundary

@@ -17,10 +17,16 @@
 using namespace cv;
 using namespace std;
 
-float computeNeighboorsAverage(vector<float> inputVector);
-float computeNeighboorsVariance(vector<float> inputVector);
-float computeThresholdT(Mat inputImage, bool considerAllNeighboors);
-float dsmiQuality(Mat inputImage, bool considerAllNeighboors);
+typedef struct maximas{
+    int x;
+    int y;
+}LocalMaxima;
 
+
+float computeNeighboorsAverage(vector<float> inputVector);
+float computeNeighboorsVariance(vector<float> inputVector, float neighboorsAverage);
+void findLocalMaximas(Mat inputImage, Mat *s1SignStatistics, Mat *maxDifferences, vector<LocalMaxima> *localMaximas);
+void computeThresholdT(Mat inputImage, Mat *neighborhoodVariance, vector<LocalMaxima> localMaximas, float *threshold);
+double dsmiQuality(Mat inputImage, bool considerAllNeighboors);
 
 #endif /* QUALITY_HPP */
