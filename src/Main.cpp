@@ -28,7 +28,7 @@ int main(int argsc, char *argsv[]){
 	rmax = 90.00;	
 
 	/*****CHECKING QUALITY **/
-	double q = dsmiQuality(grayScaleImage, false);
+	double q = dsmiQuality(grayScaleImage, 0.65);
 	cout << q;
 	/*****SEGMENTATION*****/
 	// segmentIris(grayScaleImage, rmin, rmax, scale);

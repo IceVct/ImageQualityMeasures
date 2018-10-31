@@ -27,6 +27,6 @@ float computeNeighboorsAverage(vector<float> inputVector);
 float computeNeighboorsVariance(vector<float> inputVector, float neighboorsAverage);
 void findLocalMaximas(Mat inputImage, Mat *s1SignStatistics, Mat *maxDifferences, vector<LocalMaxima> *localMaximas);
 void computeThresholdT(Mat inputImage, Mat *neighborhoodVariance, vector<LocalMaxima> localMaximas, float *threshold);
-double dsmiQuality(Mat inputImage, bool considerAllNeighboors);
+double dsmiQuality(Mat inputImage, float intensityPercentage);
 
 #endif /* QUALITY_HPP */

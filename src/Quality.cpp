@@ -106,7 +106,7 @@ void computeThresholdT(Mat inputImage, Mat *neighborhoodVariance, vector<LocalMa
 // The methods follows the Jenadeleh et al "Realtime Quality Assessment of Iris Biometrics under Visible Light", 2018 CVPR paper
 // Inputs: inputImage (input image), considerAllNeighboors (a flag for considering 4 or 8 neighboors, true 8 and false 4)
 // Output: the dsmi quality measure
-double dsmiQuality(Mat inputImage, bool considerAllNeighboors){
+double dsmiQuality(Mat inputImage, float intensityPercentage){
     double qualityMeasured = 0.0;
     Mat normalizedImage;
     int nPixels = 0;
@@ -118,9 +118,30 @@ double dsmiQuality(Mat inputImage, bool considerAllNeighboors){
     vector<LocalMaxima> localMaximas;
     float T = 0.0;
     int amountMaximas = 0;
+    int minNormValue = 0, maxNormValue = 1; 
+    /*  Both highIntensityThreshold and highIntensityMultiplier are used as an addition to the dsmi quality,
+        in order to penalize the metric depending on the average of the pixel values. If the average suggests
+        that the image has a percentage of pixel values greater than the threshold, it means that it is too bright.
+        This feature was added to the dsmi because images that were too bright was gaining a high quality value.
+    */
+    float highIntensityThreshold = intensityPercentage*maxNormValue; // it depends on the max value of the image, (it may be 1, 255, etc)
+    float highIntensityMultiplier = 0.0; // it is used as a multiplier to the dsmi quality
+    Scalar normalizedImageAverage;
+    float imageAverage = 0.0;
 
     // computing the normalized image
-    normalize(inputImage, normalizedImage, 0, 1, NORM_MINMAX, CV_32F);
+    normalize(inputImage, normalizedImage, minNormValue, maxNormValue, NORM_MINMAX, CV_32F);
+
+    // computing the average value of all pixels from the normalized image
+    // normalizedImageAverage = mean(normalizedImage);
+    // cout << normalizedImageAverage << endl;
+    // imageAverage = normalizedImageAverage.val[0];
+    // cout << imageAverage << endl;
+
+    // if the highIntensityThreshold >= highIntensityThreshold, then the value will be normalized between the values [0.01, 0.99],
+    // invert proportional to the mean value. Ex: if the mean value is 0.75, then the multiplier is 0.99, if the mean is 1, then the mult is 0.01
+    // highIntensityMultiplier = imageAverage < highIntensityThreshold ? 1.0 : (1 - (0.98*((imageAverage - intensityPercentage)/(1 - intensityPercentage)) + 0.01));
+    // cout << highIntensityMultiplier << endl;
 
     int rows = inputImage.rows, cols = inputImage.cols;
     nPixels = rows*cols;
@@ -146,5 +167,5 @@ double dsmiQuality(Mat inputImage, bool considerAllNeighboors){
     qualityMeasured = sum(tempQuality)[0]/nPixels;
     
     // normalizing the quality measured from [0,infinite) to [0, 1)]
-    return 1 - exp(-0.01*qualityMeasured); // 0.01 taken from the paper
+    return (1 - exp(-0.01*qualityMeasured)); // 0.01 taken from the paper
 }
