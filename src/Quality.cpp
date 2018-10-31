@@ -106,7 +106,7 @@ void computeThresholdT(Mat inputImage, Mat *neighborhoodVariance, vector<LocalMa
 // The methods follows the Jenadeleh et al "Realtime Quality Assessment of Iris Biometrics under Visible Light", 2018 CVPR paper
 // Inputs: inputImage (input image), considerAllNeighboors (a flag for considering 4 or 8 neighboors, true 8 and false 4)
 // Output: the dsmi quality measure
-double dsmiQuality(Mat inputImage, float intensityPercentage){
+double dsmiQuality(Mat inputImage){
     double qualityMeasured = 0.0;
     Mat normalizedImage;
     int nPixels = 0;
@@ -124,13 +124,33 @@ double dsmiQuality(Mat inputImage, float intensityPercentage){
         that the image has a percentage of pixel values greater than the threshold, it means that it is too bright.
         This feature was added to the dsmi because images that were too bright was gaining a high quality value.
     */
-    float highIntensityThreshold = intensityPercentage*maxNormValue; // it depends on the max value of the image, (it may be 1, 255, etc)
     float highIntensityMultiplier = 0.0; // it is used as a multiplier to the dsmi quality
     Scalar normalizedImageAverage;
     float imageAverage = 0.0;
 
     // computing the normalized image
     normalize(inputImage, normalizedImage, minNormValue, maxNormValue, NORM_MINMAX, CV_32F);
+
+    int rows = inputImage.rows, cols = inputImage.cols;
+    nPixels = rows*cols;
+
+    // histogram calculation
+    int nHistBins = 4; // computes the histogram in 4 bins
+    float range[] = {0, 256};
+    const float* histRange = {range};
+    bool uniform = true, accumulate = false; // calcHist function parameters
+    Mat histogram;
+
+    calcHist(&inputImage, 1, 0, Mat(), histogram, 1, &nHistBins, &histRange, uniform, accumulate);
+
+    // computing the percentage of occurrences of pixel values in the range [192, 255] (last bin)
+    float percetangeHighIntensityPixels = 0.0;
+    percetangeHighIntensityPixels = histogram.at<float>(nHistBins - 1)/nPixels;
+
+    // VERIFICAR DEPOIS A PORCENTAGEM DE PIXELS COM INTENSIDADE BAIXA, APARENTEMENTE IMAGENS MUITO ESCURAS TAMBEM ESTAO SAINDO COM NOTA MUITO BOA
+
+    // if the percentage is lesser than 20%, then the multiplier will be 1, else, it will be 1 - percentage
+    highIntensityMultiplier = percetangeHighIntensityPixels >= 0.2 ? 1 - percetangeHighIntensityPixels : 1.0;
 
     // computing the average value of all pixels from the normalized image
     // normalizedImageAverage = mean(normalizedImage);
@@ -142,9 +162,6 @@ double dsmiQuality(Mat inputImage, float intensityPercentage){
     // invert proportional to the mean value. Ex: if the mean value is 0.75, then the multiplier is 0.99, if the mean is 1, then the mult is 0.01
     // highIntensityMultiplier = imageAverage < highIntensityThreshold ? 1.0 : (1 - (0.98*((imageAverage - intensityPercentage)/(1 - intensityPercentage)) + 0.01));
     // cout << highIntensityMultiplier << endl;
-
-    int rows = inputImage.rows, cols = inputImage.cols;
-    nPixels = rows*cols;
 
     // computing all the local maximas and maximum differences from the normalized image
     findLocalMaximas(normalizedImage, &S1, &maxDifferences, &localMaximas);
@@ -167,5 +184,5 @@ double dsmiQuality(Mat inputImage, float intensityPercentage){
     qualityMeasured = sum(tempQuality)[0]/nPixels;
     
     // normalizing the quality measured from [0,infinite) to [0, 1)]
-    return (1 - exp(-0.01*qualityMeasured)); // 0.01 taken from the paper
+    return (1 - exp(-0.01*qualityMeasured))*highIntensityMultiplier; // 0.01 taken from the paper
 }
