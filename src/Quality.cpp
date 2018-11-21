@@ -106,7 +106,7 @@ void computeThresholdT(Mat inputImage, Mat *neighborhoodVariance, vector<LocalMa
 // The methods follows the Jenadeleh et al "Realtime Quality Assessment of Iris Biometrics under Visible Light", 2018 CVPR paper
 // Inputs: inputImage (input image), considerAllNeighboors (a flag for considering 4 or 8 neighboors, true 8 and false 4)
 // Output: the dsmi quality measure
-double dsmiQuality(Mat inputImage){
+double dsmiQuality(Mat inputImage, float coeficientThreshold){
     double qualityMeasured = 0.0;
     Mat normalizedImage;
     int nPixels = 0;
@@ -135,7 +135,7 @@ double dsmiQuality(Mat inputImage){
     nPixels = rows*cols;
 
     // histogram calculation
-    int nHistBins = 4; // computes the histogram in 4 bins
+    int nHistBins = 8; // computes the histogram in 8 bins
     float range[] = {0, 256};
     const float* histRange = {range};
     bool uniform = true, accumulate = false; // calcHist function parameters
@@ -143,14 +143,18 @@ double dsmiQuality(Mat inputImage){
 
     calcHist(&inputImage, 1, 0, Mat(), histogram, 1, &nHistBins, &histRange, uniform, accumulate);
 
-    // computing the percentage of occurrences of pixel values in the range [192, 255] (last bin)
-    float percetangeHighIntensityPixels = 0.0;
-    percetangeHighIntensityPixels = histogram.at<float>(nHistBins - 1)/nPixels;
+    // computing the percentage of occurrences of pixel values in the range [192, 255] (last bin) and from [0, 31] (first bin)
+    float percetageHighIntensityPixels = 0.0, percentageLowIntensityPixels = 0.0, finalPercentage = 0.0;
+    percetageHighIntensityPixels = histogram.at<float>(nHistBins - 1)/nPixels;
+    percentageLowIntensityPixels = histogram.at<float>(0)/nPixels;
+    finalPercentage = percentageLowIntensityPixels + percetageHighIntensityPixels;
+    cout << histogram << endl;
+    cout << finalPercentage << endl;
 
     // VERIFICAR DEPOIS A PORCENTAGEM DE PIXELS COM INTENSIDADE BAIXA, APARENTEMENTE IMAGENS MUITO ESCURAS TAMBEM ESTAO SAINDO COM NOTA MUITO BOA
 
-    // if the percentage is lesser than 20%, then the multiplier will be 1, else, it will be 1 - percentage
-    highIntensityMultiplier = percetangeHighIntensityPixels >= 0.2 ? 1 - percetangeHighIntensityPixels : 1.0;
+    // if the percentage is lesser than the threshold, then the multiplier will be 1, else, it will be 1 - percentage
+    highIntensityMultiplier = finalPercentage >= coeficientThreshold ? 1 - finalPercentage : 1.0;
 
     // computing the average value of all pixels from the normalized image
     // normalizedImageAverage = mean(normalizedImage);
@@ -158,7 +162,7 @@ double dsmiQuality(Mat inputImage){
     // imageAverage = normalizedImageAverage.val[0];
     // cout << imageAverage << endl;
 
-    // if the highIntensityThreshold >= highIntensityThreshold, then the value will be normalized between the values [0.01, 0.99],
+    // if the imageAverage >= highIntensityThreshold, then the value will be normalized between the values [0.01, 0.99],
     // invert proportional to the mean value. Ex: if the mean value is 0.75, then the multiplier is 0.99, if the mean is 1, then the mult is 0.01
     // highIntensityMultiplier = imageAverage < highIntensityThreshold ? 1.0 : (1 - (0.98*((imageAverage - intensityPercentage)/(1 - intensityPercentage)) + 0.01));
     // cout << highIntensityMultiplier << endl;
