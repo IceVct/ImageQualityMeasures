@@ -6,17 +6,13 @@
 
 #IncludeRegexTransform: 
 
-/home/victor/UnB/TCC/Codigos/IrisRecogSys/src/Main.cpp
+/home/victor/UnB/TCC/Codigos/ImageQualityMeasures/src/Main.cpp
 Main.hpp
-/home/victor/UnB/TCC/Codigos/IrisRecogSys/src/Main.hpp
+/home/victor/UnB/TCC/Codigos/ImageQualityMeasures/src/Main.hpp
 
-/home/victor/UnB/TCC/Codigos/IrisRecogSys/src/Quality.cpp
+/home/victor/UnB/TCC/Codigos/ImageQualityMeasures/src/Quality.cpp
 Quality.hpp
 -
-
-/home/victor/UnB/TCC/Codigos/IrisRecogSys/src/Segmentation.cpp
-Segmentation.hpp
-/home/victor/UnB/TCC/Codigos/IrisRecogSys/src/Segmentation.hpp
 
 /usr/local/include/opencv/cxcore.h
 opencv2/core/core_c.h
@@ -1227,34 +1223,10 @@ opencv2/videostab/log.hpp
 /usr/local/include/opencv2/videostab/opencv2/videostab/log.hpp
 
 include/Main.hpp
-Segmentation.hpp
-include/Segmentation.hpp
 Quality.hpp
 include/Quality.hpp
 
 include/Quality.hpp
-opencv2/opencv.hpp
--
-iostream
--
-math.h
--
-vector
--
-list
--
-string.h
--
-string
--
-float.h
--
-math.h
--
-ctime
--
-
-include/Segmentation.hpp
 opencv2/opencv.hpp
 -
 iostream

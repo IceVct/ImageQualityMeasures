@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/victor/UnB/TCC/Codigos/IrisRecogSys
+CMAKE_SOURCE_DIR = /home/victor/UnB/TCC/Codigos/ImageQualityMeasures
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/victor/UnB/TCC/Codigos/IrisRecogSys
+CMAKE_BINARY_DIR = /home/victor/UnB/TCC/Codigos/ImageQualityMeasures
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/victor/UnB/TCC/Codigos/IrisRecogSys/CMakeFiles /home/victor/UnB/TCC/Codigos/IrisRecogSys/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/victor/UnB/TCC/Codigos/ImageQualityMeasures/CMakeFiles /home/victor/UnB/TCC/Codigos/ImageQualityMeasures/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/victor/UnB/TCC/Codigos/IrisRecogSys/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/victor/UnB/TCC/Codigos/ImageQualityMeasures/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named iris_recog
+# Target rules for targets named dsmi_quality
 
 # Build rule for target.
-iris_recog: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 iris_recog
-.PHONY : iris_recog
+dsmi_quality: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 dsmi_quality
+.PHONY : dsmi_quality
 
 # fast build rule for target.
-iris_recog/fast:
-	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/build
-.PHONY : iris_recog/fast
+dsmi_quality/fast:
+	$(MAKE) -f CMakeFiles/dsmi_quality.dir/build.make CMakeFiles/dsmi_quality.dir/build
+.PHONY : dsmi_quality/fast
 
 src/Main.o: src/Main.cpp.o
 
@@ -129,7 +129,7 @@ src/Main.o: src/Main.cpp.o
 
 # target to build an object file
 src/Main.cpp.o:
-	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Main.cpp.o
+	$(MAKE) -f CMakeFiles/dsmi_quality.dir/build.make CMakeFiles/dsmi_quality.dir/src/Main.cpp.o
 .PHONY : src/Main.cpp.o
 
 src/Main.i: src/Main.cpp.i
@@ -138,7 +138,7 @@ src/Main.i: src/Main.cpp.i
 
 # target to preprocess a source file
 src/Main.cpp.i:
-	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Main.cpp.i
+	$(MAKE) -f CMakeFiles/dsmi_quality.dir/build.make CMakeFiles/dsmi_quality.dir/src/Main.cpp.i
 .PHONY : src/Main.cpp.i
 
 src/Main.s: src/Main.cpp.s
@@ -147,7 +147,7 @@ src/Main.s: src/Main.cpp.s
 
 # target to generate assembly for a file
 src/Main.cpp.s:
-	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Main.cpp.s
+	$(MAKE) -f CMakeFiles/dsmi_quality.dir/build.make CMakeFiles/dsmi_quality.dir/src/Main.cpp.s
 .PHONY : src/Main.cpp.s
 
 src/Quality.o: src/Quality.cpp.o
@@ -156,7 +156,7 @@ src/Quality.o: src/Quality.cpp.o
 
 # target to build an object file
 src/Quality.cpp.o:
-	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Quality.cpp.o
+	$(MAKE) -f CMakeFiles/dsmi_quality.dir/build.make CMakeFiles/dsmi_quality.dir/src/Quality.cpp.o
 .PHONY : src/Quality.cpp.o
 
 src/Quality.i: src/Quality.cpp.i
@@ -165,7 +165,7 @@ src/Quality.i: src/Quality.cpp.i
 
 # target to preprocess a source file
 src/Quality.cpp.i:
-	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Quality.cpp.i
+	$(MAKE) -f CMakeFiles/dsmi_quality.dir/build.make CMakeFiles/dsmi_quality.dir/src/Quality.cpp.i
 .PHONY : src/Quality.cpp.i
 
 src/Quality.s: src/Quality.cpp.s
@@ -174,35 +174,8 @@ src/Quality.s: src/Quality.cpp.s
 
 # target to generate assembly for a file
 src/Quality.cpp.s:
-	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Quality.cpp.s
+	$(MAKE) -f CMakeFiles/dsmi_quality.dir/build.make CMakeFiles/dsmi_quality.dir/src/Quality.cpp.s
 .PHONY : src/Quality.cpp.s
-
-src/Segmentation.o: src/Segmentation.cpp.o
-
-.PHONY : src/Segmentation.o
-
-# target to build an object file
-src/Segmentation.cpp.o:
-	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Segmentation.cpp.o
-.PHONY : src/Segmentation.cpp.o
-
-src/Segmentation.i: src/Segmentation.cpp.i
-
-.PHONY : src/Segmentation.i
-
-# target to preprocess a source file
-src/Segmentation.cpp.i:
-	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Segmentation.cpp.i
-.PHONY : src/Segmentation.cpp.i
-
-src/Segmentation.s: src/Segmentation.cpp.s
-
-.PHONY : src/Segmentation.s
-
-# target to generate assembly for a file
-src/Segmentation.cpp.s:
-	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/src/Segmentation.cpp.s
-.PHONY : src/Segmentation.cpp.s
 
 # Help Target
 help:
@@ -212,16 +185,13 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... iris_recog"
+	@echo "... dsmi_quality"
 	@echo "... src/Main.o"
 	@echo "... src/Main.i"
 	@echo "... src/Main.s"
 	@echo "... src/Quality.o"
 	@echo "... src/Quality.i"
 	@echo "... src/Quality.s"
-	@echo "... src/Segmentation.o"
-	@echo "... src/Segmentation.i"
-	@echo "... src/Segmentation.s"
 .PHONY : help
 
 

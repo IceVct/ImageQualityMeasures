@@ -4,9 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/victor/UnB/TCC/Codigos/IrisRecogSys/src/Main.cpp" "/home/victor/UnB/TCC/Codigos/IrisRecogSys/CMakeFiles/iris_recog.dir/src/Main.cpp.o"
-  "/home/victor/UnB/TCC/Codigos/IrisRecogSys/src/Quality.cpp" "/home/victor/UnB/TCC/Codigos/IrisRecogSys/CMakeFiles/iris_recog.dir/src/Quality.cpp.o"
-  "/home/victor/UnB/TCC/Codigos/IrisRecogSys/src/Segmentation.cpp" "/home/victor/UnB/TCC/Codigos/IrisRecogSys/CMakeFiles/iris_recog.dir/src/Segmentation.cpp.o"
+  "/home/victor/UnB/TCC/Codigos/ImageQualityMeasures/src/Main.cpp" "/home/victor/UnB/TCC/Codigos/ImageQualityMeasures/CMakeFiles/dsmi_quality.dir/src/Main.cpp.o"
+  "/home/victor/UnB/TCC/Codigos/ImageQualityMeasures/src/Quality.cpp" "/home/victor/UnB/TCC/Codigos/ImageQualityMeasures/CMakeFiles/dsmi_quality.dir/src/Quality.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

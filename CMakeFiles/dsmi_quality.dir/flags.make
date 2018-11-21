@@ -6,5 +6,5 @@ CXX_FLAGS =
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -isystem /usr/local/include -isystem /usr/local/include/opencv -I/home/victor/UnB/TCC/Codigos/IrisRecogSys/include 
+CXX_INCLUDES = -isystem /usr/local/include -isystem /usr/local/include/opencv -I/home/victor/UnB/TCC/Codigos/ImageQualityMeasures/include 
 

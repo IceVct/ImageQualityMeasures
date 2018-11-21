@@ -54,45 +54,45 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/victor/UnB/TCC/Codigos/IrisRecogSys
+CMAKE_SOURCE_DIR = /home/victor/UnB/TCC/Codigos/ImageQualityMeasures
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/victor/UnB/TCC/Codigos/IrisRecogSys
+CMAKE_BINARY_DIR = /home/victor/UnB/TCC/Codigos/ImageQualityMeasures
 
 #=============================================================================
-# Target rules for target CMakeFiles/iris_recog.dir
+# Target rules for target CMakeFiles/dsmi_quality.dir
 
 # All Build rule for target.
-CMakeFiles/iris_recog.dir/all:
-	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/depend
-	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/victor/UnB/TCC/Codigos/IrisRecogSys/CMakeFiles --progress-num=1,2,3,4 "Built target iris_recog"
-.PHONY : CMakeFiles/iris_recog.dir/all
+CMakeFiles/dsmi_quality.dir/all:
+	$(MAKE) -f CMakeFiles/dsmi_quality.dir/build.make CMakeFiles/dsmi_quality.dir/depend
+	$(MAKE) -f CMakeFiles/dsmi_quality.dir/build.make CMakeFiles/dsmi_quality.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/victor/UnB/TCC/Codigos/ImageQualityMeasures/CMakeFiles --progress-num=1,2,3 "Built target dsmi_quality"
+.PHONY : CMakeFiles/dsmi_quality.dir/all
 
 # Include target in all.
-all: CMakeFiles/iris_recog.dir/all
+all: CMakeFiles/dsmi_quality.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/iris_recog.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/victor/UnB/TCC/Codigos/IrisRecogSys/CMakeFiles 4
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/iris_recog.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/victor/UnB/TCC/Codigos/IrisRecogSys/CMakeFiles 0
-.PHONY : CMakeFiles/iris_recog.dir/rule
+CMakeFiles/dsmi_quality.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/victor/UnB/TCC/Codigos/ImageQualityMeasures/CMakeFiles 3
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/dsmi_quality.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/victor/UnB/TCC/Codigos/ImageQualityMeasures/CMakeFiles 0
+.PHONY : CMakeFiles/dsmi_quality.dir/rule
 
 # Convenience name for target.
-iris_recog: CMakeFiles/iris_recog.dir/rule
+dsmi_quality: CMakeFiles/dsmi_quality.dir/rule
 
-.PHONY : iris_recog
-
-# clean rule for target.
-CMakeFiles/iris_recog.dir/clean:
-	$(MAKE) -f CMakeFiles/iris_recog.dir/build.make CMakeFiles/iris_recog.dir/clean
-.PHONY : CMakeFiles/iris_recog.dir/clean
+.PHONY : dsmi_quality
 
 # clean rule for target.
-clean: CMakeFiles/iris_recog.dir/clean
+CMakeFiles/dsmi_quality.dir/clean:
+	$(MAKE) -f CMakeFiles/dsmi_quality.dir/build.make CMakeFiles/dsmi_quality.dir/clean
+.PHONY : CMakeFiles/dsmi_quality.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/dsmi_quality.dir/clean
 
 .PHONY : clean
 
