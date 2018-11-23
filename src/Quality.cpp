@@ -58,7 +58,7 @@ void findLocalMaximas(Mat inputImage, Mat *s1SignStatistics, Mat *maxDifferences
                 tmpLocalMaxima.x = i;
                 tmpLocalMaxima.y = j;
                 tempLocalMaximas.push_back(tmpLocalMaxima);
-            }	
+            }
 		}
     
     // return values
@@ -148,8 +148,6 @@ double dsmiQuality(Mat inputImage, float coeficientThreshold){
     percetageHighIntensityPixels = histogram.at<float>(nHistBins - 1)/nPixels;
     percentageLowIntensityPixels = histogram.at<float>(0)/nPixels;
     finalPercentage = percentageLowIntensityPixels + percetageHighIntensityPixels;
-    cout << histogram << endl;
-    cout << finalPercentage << endl;
 
     // VERIFICAR DEPOIS A PORCENTAGEM DE PIXELS COM INTENSIDADE BAIXA, APARENTEMENTE IMAGENS MUITO ESCURAS TAMBEM ESTAO SAINDO COM NOTA MUITO BOA
 
@@ -185,6 +183,8 @@ double dsmiQuality(Mat inputImage, float coeficientThreshold){
     neighboorsVariance += 0.00025;
 
     tempQuality = S/neighboorsVariance;
+    Scalar sums = sum(tempQuality);
+    cout << sums << endl;
     qualityMeasured = sum(tempQuality)[0]/nPixels;
     
     // normalizing the quality measured from [0,infinite) to [0, 1)]
