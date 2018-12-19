@@ -6,7 +6,7 @@ function [occMeasure] = occlusionMeasure(normIrisMaskImage)
 % Image-Quality Measure (by Craig Belcher and Yingzi Du) nomenclature.
 
 %% Variables initialization
-[rows, cols] = size(normImage);
+[rows, cols] = size(normIrisMaskImage);
 kappa = 0.011;
 lambda = 4.5;
 segMaskSize = rows*cols;

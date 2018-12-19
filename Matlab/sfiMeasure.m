@@ -19,17 +19,20 @@ L = cols/8;
 % suggested by the paper
 N = rows/8;
 
+%% Performing the Log Gabor Filter
+[EO, BP] = loggaborconvolve(normIrisSeg, 4, 6, 3, 1.7, 0.65, 1.3, 0, 1);
+logGaborImage = abs(EO{1, 1});
 
 %% Feature Information Measure
-% fimMeasure = featureInformationMeasure(normIrisSeg, normIrisSeg, L, N);
+fimMeasure = featureInformationMeasure(logGaborImage, normIrisSegMask, L, N);
 
 %% Feature Region Measures
 
 % Occlusion Measure
-% occMeasure = occlusionMeasure(normIrisSegMask);
+occMeasure = occlusionMeasure(normIrisSegMask);
 
 % Dilation Measure
-% dilMeasure = dilationMeasure(pupilRadius, irisRadius);
+dilMeasure = dilationMeasure(pupilRadius, irisRadius);
 
 %% Overall Measure
 % computing the overall measure, that is the multiplication of all of the
