@@ -2,8 +2,8 @@ function [computedQuality] = sfiMeasure(normIrisSeg, normIrisSegMask, pupilRadiu
 %SFI_measure Function that computes the iris segmentation quality, based on
 % normalized segmented image
 
-% Most of the variables names are following the paper A Selective Feature Information Approach for Iris
-% Image-Quality Measure (by Craig Belcher and Yingzi Du) nomenclature.
+% Most of the variables names are following the paper Feature correlation evaluation approach for iris feature
+% quality measure (by Craig Belcher, Yingzi Du, Zhi Zhou and Robert Ives) nomenclature.
 
 %% Variables initialization
 [rows, cols] = size(normIrisSeg);
@@ -24,7 +24,16 @@ N = rows/8;
 logGaborImage = abs(EO{1, 1});
 
 %% Feature Information Measure
-fimMeasure = featureInformationMeasure(logGaborImage, normIrisSegMask, L, N);
+% fimMeasure = featureInformationMeasure(logGaborImage, normIrisSegMask, L, N);
+fcmMeasure = [];
+for i = 1: 4
+    for j = 1:6
+        logGaborImage = abs(EO{i, j});
+%         imshow(angle(EO{1, 1}), []);
+%         pause;
+        fcmMeasure = [fcmMeasure featureCorrelationMeasure(logGaborImage, normIrisSegMask)];
+    end
+end
 
 %% Feature Region Measures
 
@@ -37,7 +46,7 @@ dilMeasure = dilationMeasure(pupilRadius, irisRadius);
 %% Overall Measure
 % computing the overall measure, that is the multiplication of all of the
 % individual measures after the normalization
-computedQuality = fimMeasure*occMeasure*dilMeasure;
+computedQuality = fcmMeasure.*occMeasure*dilMeasure;
 
 end
 
