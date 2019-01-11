@@ -1,3 +1,3 @@
-/home/victor/UnB/TCC/Codigos/ImageQualityMeasures/CMakeFiles/rebuild_cache.dir
-/home/victor/UnB/TCC/Codigos/ImageQualityMeasures/CMakeFiles/edit_cache.dir
-/home/victor/UnB/TCC/Codigos/ImageQualityMeasures/CMakeFiles/dsmi_quality.dir
+/home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/CMakeFiles/rebuild_cache.dir
+/home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/CMakeFiles/dsmi_quality.dir
+/home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/CMakeFiles/edit_cache.dir

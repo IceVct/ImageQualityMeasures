@@ -93,7 +93,7 @@
 % April 2010 - Reworked to tidy things up. Return of bandpass images added.
 % March 2013 - Restored use of dThetaOnSigma to control angular spread of filters.
 
-function [EO, BP] = gaborconvolve(im, nscale, norient, minWaveLength, mult, ...
+function [EO, BP] = loggaborconvolve(im, nscale, norient, minWaveLength, mult, ...
 			    sigmaOnf, dThetaOnSigma, Lnorm, feedback)
     
     if ndims(im) == 3
@@ -208,12 +208,13 @@ function [EO, BP] = gaborconvolve(im, nscale, norient, minWaveLength, mult, ...
 
             if Lnorm == 2      % Normalize filters to have the same L2 norm ** why sqrt 2 **????
                 L = sqrt(sum(real(filter(:)).^2 + imag(filter(:)).^2 ))/sqrt(2);
+                filter = filter./L;  
             elseif Lnorm == 1  % Normalize to have same L1
                 L = sum(sum(abs(real(ifft2(filter)))));
+                filter = filter./L;              
             elseif Lnorm == 0   % No normalization
-                L = 1;                
+                ;
             end
-            filter = filter./L;  
 
             % Do the convolution, back transform, and save the result in EO
             EO{s,o} = ifft2(imagefft .* filter);    
@@ -223,6 +224,10 @@ function [EO, BP] = gaborconvolve(im, nscale, norient, minWaveLength, mult, ...
 
     end  % For each orientation
     
-    if feedback, fprintf('                                        \r'); 
-   
-    end
+    if feedback, fprintf('                                        \r'); end
+
+
+
+
+
+

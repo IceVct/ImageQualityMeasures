@@ -21,7 +21,7 @@ N = rows/8;
 
 %% Performing the Log Gabor Filter
 [EO, BP] = loggaborconvolve(normIrisSeg, 4, 6, 3, 1.7, 0.65, 1.3, 0, 1);
-logGaborImage = abs(EO{1, 1});
+logGaborImage = abs(EO{4, 1});
 
 %% Feature Information Measure
 % fimMeasure = featureInformationMeasure(logGaborImage, normIrisSegMask, L, N);
