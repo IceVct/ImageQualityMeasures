@@ -1,10 +1,12 @@
-function [outputSignal] = oneDLogGaborFilter(inputSignal, wavelength, sigma)
+function [outputSignal] = oneDLogGaborFilter(inputSignal, wavelength, sigma, mult, doPLot)
 %oneDLogGaborFilter Function that computes the 1D log gabor filter
 %   Inputs: inputSignal - signal to be filtered,
 %           wavelength - wavelength of the smallest scale filter - 3
 %           sigma - used to control the filter bandwidth - 0.65
 %   Outputs: outputSignal - filtered signal
 
+% Sigma - 0.45
+% mult - 2
 [rows cols] = size(inputSignal);					
     
 % Pre-compute some stuff to speed up filter construction
@@ -17,9 +19,11 @@ else
     x = [-cols/2:(cols/2-1)]/cols; 
 end
 
-omega = sqrt(x.^2 + x.^2);       % Matrix values contain *normalised* radius from centre.
-omega = ifftshift(omega);       % Quadrant shift radius and theta so that filters
-omega(1, 1) = 1;
+% omega = sqrt(x.^2 + x.^2);       % Matrix values contain *normalised* radius from centre.
+% omega = abs(x);
+% omega = ifftshift(omega);       % Quadrant shift radius and theta so that filters
+% omega(1, 1) = 1;
+omega = linspace(0, 0.5, cols);
 
 % Filters are constructed in terms of two components.
 % 1) The radial component, which controls the frequency band that the filter
@@ -35,21 +39,38 @@ omega(1, 1) = 1;
 % incorporated. This keeps the overall norm of each filter not too dissimilar.
 lp = lowpassfilter([rows,cols],.45,15);   % Radius .45, 'sharpness' 15
 
-
 fourierInputSignal = fft(inputSignal);
 
-wavelength = wavelength*4.9130;
+if(doPLot)
+    plot(abs(fftshift(fourierInputSignal)));pause;
+end
+
+wavelength = wavelength*mult^(3); 
 
 fo = 1.0/wavelength; % centre frequency
 
 logGaborFilter = exp((-(log(omega/fo)).^2) / (2 * log(sigma)^2));
-logGaborFilter = logGaborFilter.*lp; % applying low pass filter
+% logGaborFilter = logGaborFilter.*lp; % applying low pass filter
 logGaborFilter(1, 1) = 0; % Set the value at the 0
                           % frequency point of the filter 
                           % back to zero (undo the radius fudge).
 
-filteredSignal = fourierInputSignal .* logGaborFilter;                          
+                          
+if(doPLot)
+    plot(logGaborFilter);pause;
+end
+
+filteredSignal = fourierInputSignal .* logGaborFilter;
+
+if(doPLot)
+    plot(omega, abs(filteredSignal));pause;
+end
+
 outputSignal = ifft(filteredSignal);
+if(doPLot)
+    plot(abs(outputSignal));pause;
+    close all;
+end
 
 end
 

@@ -1,8 +1,8 @@
-function [relEntropy] = relativeEntropy(inp1, inp2)
+function [relEntropy] = relativeEntropy(inputSignal1, inputSignal2)
 %relativeEntropy Computes the relative entropy of two signals
 
-% Computing the relatives entropies
-relativeEntropies = inp1.*log2(inp1 ./ inp2);
+% Computing the relative entropies
+relativeEntropies = inputSignal1.*log2(inputSignal1 ./ inputSignal2);
 
 relEntropy = sum(relativeEntropies);
 

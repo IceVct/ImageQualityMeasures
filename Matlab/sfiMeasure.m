@@ -25,15 +25,15 @@ logGaborImage = abs(EO{4, 1});
 
 %% Feature Information Measure
 % fimMeasure = featureInformationMeasure(logGaborImage, normIrisSegMask, L, N);
-fcmMeasure = [];
-for i = 1: 4
-    for j = 1:6
-        logGaborImage = abs(EO{i, j});
+% fcmMeasure = [];
+% for i = 1: 4
+%     for j = 1:6
+%         logGaborImage = abs(EO{i, j});
 %         imshow(angle(EO{1, 1}), []);
 %         pause;
-        fcmMeasure = [fcmMeasure featureCorrelationMeasure(logGaborImage, normIrisSegMask)];
-    end
-end
+fcmMeasure = featureCorrelationMeasure(logGaborImage, normIrisSegMask);
+%     end
+% end
 
 %% Feature Region Measures
 

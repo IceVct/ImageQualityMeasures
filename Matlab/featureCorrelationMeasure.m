@@ -24,7 +24,7 @@ J = zeros(1, N);
 % in order to eliminate the effects of noise, the mean value of valid pixels of each row are assigned to the pixels that are covered
 % by occlusions of the same row
 for i = 1:rows
-    noisePositions = find(normMaskImage(i, :) == 0);
+        noisePositions = find(normMaskImage(i, :) == 0);
     normalIrisPositions = find(normMaskImage(i, :) == 255);
     if(length(normalIrisPositions) > 0)
         normalIrisMean = mean(logGaborNormImage(i, normalIrisPositions));
@@ -44,8 +44,14 @@ for i = 2:rows
     s = logGaborNormImage(i, :);
     
     % computing the probability mass function of the both rows
-    p = r./norm(r, 2); 
-    q = s./norm(s, 2);
+    %rNorm2 = norm(r, 2);
+    %sNorm2 = norm(s, 2);
+    
+    %p = r./rNorm2;
+    %q = s./sNorm2;
+    
+    p = r./sum(r);
+    q = r./sum(s);
     
     % information distance
     J(1, i - 1) = relativeEntropy(p, q) + relativeEntropy(q, p);
