@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 2.8)
+project( fcm_quality )
+find_package( OpenCV REQUIRED )
+find_package(PkgConfig)
+include_directories( ${OpenCV_INCLUDE_DIRS} ${LSP_INCLUDE_DIRS} include)
+file(GLOB SOURCES "src/*.cpp")
+add_executable( fcm_quality  ${SOURCES})
+target_link_libraries( fcm_quality ${OpenCV_LIBS} ${LSP_LIBRARIES})

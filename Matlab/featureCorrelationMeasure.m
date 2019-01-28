@@ -44,14 +44,8 @@ for i = 2:rows
     s = logGaborNormImage(i, :);
     
     % computing the probability mass function of the both rows
-    %rNorm2 = norm(r, 2);
-    %sNorm2 = norm(s, 2);
-    
-    %p = r./rNorm2;
-    %q = s./sNorm2;
-    
     p = r./sum(r);
-    q = r./sum(s);
+    q = s./sum(s);
     
     % information distance
     J(1, i - 1) = relativeEntropy(p, q) + relativeEntropy(q, p);

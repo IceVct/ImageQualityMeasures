@@ -8,36 +8,8 @@ function [outputSignal] = oneDLogGaborFilter(inputSignal, wavelength, sigma, mul
 % Sigma - 0.45
 % mult - 2
 [rows cols] = size(inputSignal);					
-    
-% Pre-compute some stuff to speed up filter construction
-% Set up X and Y matrices with ranges normalised to +/- 0.5
-% The following code adjusts things appropriately for odd and even values
-% of rows and columns.
-if mod(cols,2)
-    x = [-(cols-1)/2:(cols-1)/2]/(cols-1);
-else
-    x = [-cols/2:(cols/2-1)]/cols; 
-end
 
-% omega = sqrt(x.^2 + x.^2);       % Matrix values contain *normalised* radius from centre.
-% omega = abs(x);
-% omega = ifftshift(omega);       % Quadrant shift radius and theta so that filters
-% omega(1, 1) = 1;
 omega = linspace(0, 0.5, cols);
-
-% Filters are constructed in terms of two components.
-% 1) The radial component, which controls the frequency band that the filter
-%    responds to
-% 2) The angular component, which controls the orientation that the filter
-%    responds to.
-% The two components are multiplied together to construct the overall filter.
-
-% Construct the radial filter components...
-% First construct a low-pass filter that is as large as possible, yet falls
-% away to zero at the boundaries.  All log Gabor filters are multiplied by
-% this to ensure no extra frequencies at the 'corners' of the FFT are
-% incorporated. This keeps the overall norm of each filter not too dissimilar.
-lp = lowpassfilter([rows,cols],.45,15);   % Radius .45, 'sharpness' 15
 
 fourierInputSignal = fft(inputSignal);
 
