@@ -7,10 +7,10 @@ import cv2
 # quality measure (by Craig Belcher, Yingzi Du, Zhi Zhou and Robert Ives) nomenclature.
 
 def main():
-    d = dil_measure.dilation_measure(37., 135.)
+    d = dilation_measure(37., 135.)
     print d
     im = cv2.imread('/home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/OsirisOutput/Warsaw/Output/NormalizedMasks/IMG_3417_mano.bmp', 0)
-    o = occ_measure.occlusion_measure(im)
+    o = occlusion_measure(im)
     print o
 
 
