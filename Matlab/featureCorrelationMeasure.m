@@ -24,14 +24,14 @@ J = zeros(1, N);
 % in order to eliminate the effects of noise, the mean value of valid pixels of each row are assigned to the pixels that are covered
 % by occlusions of the same row
 for i = 1:rows
-        noisePositions = find(normMaskImage(i, :) == 0);
+    noisePositions = find(normMaskImage(i, :) == 0);
     normalIrisPositions = find(normMaskImage(i, :) == 255);
     if(length(normalIrisPositions) > 0)
         normalIrisMean = mean(logGaborNormImage(i, normalIrisPositions));
+%         logGaborNormImage(i, noisePositions) = normalIrisMean;
     else
         normalIrisMean = 0;
     end
-    
     logGaborNormImage(i, noisePositions) = normalIrisMean;
 end
 
@@ -56,7 +56,7 @@ findNaN = isnan(J);
 J(findNaN) = 0;
 
 % computing the FCM measure
-FCM = sum(J)/N;
+FCM = mean(J);
 
 %% Computing the measure normalization
 if(0 <= FCM && FCM <= Beta)
