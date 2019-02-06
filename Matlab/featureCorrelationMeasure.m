@@ -56,7 +56,7 @@ findNaN = isnan(J);
 J(findNaN) = 0;
 
 % computing the FCM measure
-FCM = mean(J);
+FCM = mean(J)
 
 %% Computing the measure normalization
 if(0 <= FCM && FCM <= Beta)

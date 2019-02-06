@@ -23,19 +23,19 @@ fo = 1.0/wavelength; % centre frequency
 
 logGaborFilter = exp((-(log(omega/fo)).^2) / (2 * log(sigma)^2));
 % logGaborFilter = logGaborFilter.*lp; % applying low pass filter
-logGaborFilter(1, 1) = 0; % Set the value at the 0
+% logGaborFilter(1, 1) = 0; % Set the value at the 0
                           % frequency point of the filter 
                           % back to zero (undo the radius fudge).
 
                           
 if(doPLot)
-    plot(logGaborFilter);pause;
+    plot(omega, logGaborFilter);pause;
 end
 
 filteredSignal = fourierInputSignal .* logGaborFilter;
 
 if(doPLot)
-    plot(omega, abs(filteredSignal));pause;
+    plot(abs(filteredSignal));pause;
 end
 
 outputSignal = ifft(filteredSignal);

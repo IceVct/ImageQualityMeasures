@@ -13,11 +13,11 @@ def feature_correlation_measure(log_gabor_norm_image, norm_iris_mask_image):
     n_cols = log_gabor_norm_image.shape[1]
 
     # pre initializing arrays that will be used, in order to save some processing time
-    r = np.zeros(1, n_cols)
-    s = np.zeros(1, n_cols)
-    p = np.zeros(1, n_cols)
-    q = np.zeros(1, n_cols)
-    j = np.zeros(1, n_rows - 1)
+    r = np.zeros((1, n_cols), dtype=float)
+    s = np.zeros((1, n_cols), dtype=float)
+    p = np.zeros((1, n_cols), dtype=float)
+    q = np.zeros((1, n_cols), dtype=float)
+    j = np.zeros((1, n_rows - 1), dtype=float)
 
     # Parameters for normalize, according to the reference paper (MORE INFO IN THE MAIN FUNCTION)
     beta = 0.005
@@ -37,18 +37,19 @@ def feature_correlation_measure(log_gabor_norm_image, norm_iris_mask_image):
 
         # computing the mean of the normal iris positions
         # checking if there's any normal iris position, in order to avoid errors
-        if normal_iris_positions.size > 0:
-            normal_iris_mean = np.mean(log_gabor_norm_image[i, normal_iris_positions])
+        if normal_iris_positions[0].size > 0:
+            normal_iris_mean = np.mean(log_gabor_norm_image[i, normal_iris_positions[0]])
         else:
             normal_iris_mean = 0
 
         # replacing the noise positions with the mean values computed
 
         # OUTRA COISA PRA TENTAR, FAZER ESSA OPERACAO DE SUBSTITUICAO ANTES DE CALCULAR A IMAGEM FILTRADA....
+        # RESULTADO: PIOR DO QUE AGORA
 
         # SERA QUE EH PRA SUBSTITUIR SO SE TIVER PIXEL VALIDO NA LINHA DA MATRIZ?
-        # PORQUE SE NAO TIVER, VALORES QUE A PRINCIPIO, SERIAM VALIDOS, IRIAM VIRAR 0
-        log_gabor_norm_image[i, noise_positions] = normal_iris_mean        
+        # PORQUE SE NAO TIVER, VALORES QUE A PRINCIPIO, SERIAM VALIDOS, IRIAM VIRAR 0 -- A PENSAR
+        log_gabor_norm_image[i, noise_positions[0]] = normal_iris_mean        
 
     # computing the correlation measure between the filtered image rows
     for i in range(1, n_rows):
@@ -69,6 +70,7 @@ def feature_correlation_measure(log_gabor_norm_image, norm_iris_mask_image):
     ### Ending the measure computation ###
     # computing the fcm measure
     fcm = np.mean(j)
+    print fcm
 
     # computing the measure normalization
     if 0 <= fcm and fcm <= beta:

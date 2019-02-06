@@ -177,6 +177,7 @@ function [EO, BP] = loggaborconvolve(im, nscale, norient, minWaveLength, mult, .
         end
         
         logGabor{s} = logGabor{s}./L;        
+        plot(radius, logGabor{s});pause;
         BP{s} = ifft2(imagefft .* logGabor{s});   
     end
     
