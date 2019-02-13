@@ -39,17 +39,14 @@ def feature_correlation_measure(log_gabor_norm_image, norm_iris_mask_image):
         # checking if there's any normal iris position, in order to avoid errors
         if normal_iris_positions[0].size > 0:
             normal_iris_mean = np.mean(log_gabor_norm_image[i, normal_iris_positions[0]])
-        else:
-            normal_iris_mean = 0
+
+            # replacing the noise positions with the mean values computed
+            log_gabor_norm_image[i, noise_positions[0]] = normal_iris_mean
+        # else:
+        #     normal_iris_mean = 0
 
         # replacing the noise positions with the mean values computed
-
-        # OUTRA COISA PRA TENTAR, FAZER ESSA OPERACAO DE SUBSTITUICAO ANTES DE CALCULAR A IMAGEM FILTRADA....
-        # RESULTADO: PIOR DO QUE AGORA
-
-        # SERA QUE EH PRA SUBSTITUIR SO SE TIVER PIXEL VALIDO NA LINHA DA MATRIZ?
-        # PORQUE SE NAO TIVER, VALORES QUE A PRINCIPIO, SERIAM VALIDOS, IRIAM VIRAR 0 -- A PENSAR
-        log_gabor_norm_image[i, noise_positions[0]] = normal_iris_mean        
+        # log_gabor_norm_image[i, noise_positions[0]] = normal_iris_mean        
 
     # computing the correlation measure between the filtered image rows
     for i in range(1, n_rows):
@@ -70,7 +67,7 @@ def feature_correlation_measure(log_gabor_norm_image, norm_iris_mask_image):
     ### Ending the measure computation ###
     # computing the fcm measure
     fcm = np.mean(j)
-    print fcm
+    print 'FCM = ' + str(fcm)
 
     # computing the measure normalization
     if 0 <= fcm and fcm <= beta:

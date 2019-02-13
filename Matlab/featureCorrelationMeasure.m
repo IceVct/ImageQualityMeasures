@@ -28,27 +28,27 @@ for i = 1:rows
     normalIrisPositions = find(normMaskImage(i, :) == 255);
     if(length(normalIrisPositions) > 0)
         normalIrisMean = mean(logGaborNormImage(i, normalIrisPositions));
-%         logGaborNormImage(i, noisePositions) = normalIrisMean;
-    else
-        normalIrisMean = 0;
+        logGaborNormImage(i, noisePositions) = normalIrisMean;
+%     else
+%         normalIrisMean = 0;
     end
-    logGaborNormImage(i, noisePositions) = normalIrisMean;
+%     logGaborNormImage(i, noisePositions) = normalIrisMean;
 end
 
 
 % looping through the image rows and computing the correlation measures
 % between them
-for i = 2:rows
+for i = 1:rows-1
     
-    r = logGaborNormImage(i - 1, :);
-    s = logGaborNormImage(i, :);
+    r = logGaborNormImage(i, :);
+    s = logGaborNormImage(i + 1, :);
     
     % computing the probability mass function of the both rows
     p = r./sum(r);
     q = s./sum(s);
     
     % information distance
-    J(1, i - 1) = relativeEntropy(p, q) + relativeEntropy(q, p);
+    J(1, i) = relativeEntropy(p, q) + relativeEntropy(q, p);
 end
 
 % figuring out if a NaN has ocurred

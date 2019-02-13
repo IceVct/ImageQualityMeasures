@@ -20,13 +20,18 @@ def main():
     image = cv2.imread(sys.argv[1], 0)
     image_mask = cv2.imread(sys.argv[2], 0)
 
+    # printing the image being processed
+    split_input_image_path = sys.argv[1].split('/')
+    split_input_image_extension = split_input_image_path[-1].split('.')
+    print 'Image being processed: ' + split_input_image_extension[0]
+
     # filtering the image
-    filtered_image = image_log_gabor_filter(image, 3, 0.38, 2.4)
+    filtered_image = image_log_gabor_filter(image, 22, 0.5)
     filtered_image = np.absolute(filtered_image)
 
     # computing the fcm measure
     fcm = feature_correlation_measure(filtered_image, image_mask)
-    print 'fcm = ' + str(fcm)
+    print 'fcm_final = ' + str(fcm)
 
     # computing the dilation measure
     d = dilation_measure(37., 135.)

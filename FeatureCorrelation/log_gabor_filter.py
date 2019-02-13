@@ -17,22 +17,29 @@ def one_dim_log_gabor_filter(image_row, log_gabor_filter):
 # Function that receives an image and filters each row with the log gabor filter
 # Input: image (numpy array), wavelength (float), sigma(float), mult(float), n_scales(float)
 # Output: filtered_image (numpy array)
-def image_log_gabor_filter(image, wavelength, sigma, mult, n_scales=4.):
+def image_log_gabor_filter(image, wavelength, sigma):
     # getting image parameters
     rows, cols = image.shape
 
-    # creating an array with the frequencies that are going to be used
-    omega = np.linspace(0, 0.5, cols)
+    ndata = cols
+    # checking if the amount of columns in the image is odd, if it is, discard the last element
+    if cols % 2 == 1:
+        ndata = ndata - 1
 
-    # computing the centre frequency, based on the wavelength and mult parameter ( used for controlling the scales)
-    # the scale being used is n_scales = 4.
-    fo = 1./(wavelength*mult**(n_scales - 1))
+    log_gabor_filter = np.zeros((1, ndata))
+
+    # creating an array with the frequencies that are going to be used
+    omega = np.linspace(0, 0.5, ndata/2 + 1)
+    omega[0] = 1.
+
+    # computing the centre frequency, based on the wavelength
+    fo = 1./wavelength
 
     # ignoring the log divide by 0 warning
     np.seterr(divide = 'ignore')
 
     # Generating the log gabor 1D kernel
-    log_gabor_filter = np.exp((-(np.log(omega/fo))**2.) / (2. * np.log(sigma)**2))
+    log_gabor_filter[0, 0:((ndata/2) + 1)] = np.exp((-(np.log(omega/fo))**2.) / (2. * np.log(sigma)**2))
 
     # setting numpy divide warnings back
     np.seterr(divide = 'warn')
