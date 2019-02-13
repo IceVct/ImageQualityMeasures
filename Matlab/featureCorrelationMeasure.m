@@ -18,7 +18,6 @@ p = zeros(1, cols);
 q = zeros(1, cols);
 J = zeros(1, N);
 
-
 %% Computing the measure
 
 % in order to eliminate the effects of noise, the mean value of valid pixels of each row are assigned to the pixels that are covered
@@ -28,11 +27,12 @@ for i = 1:rows
     normalIrisPositions = find(normMaskImage(i, :) == 255);
     if(length(normalIrisPositions) > 0)
         normalIrisMean = mean(logGaborNormImage(i, normalIrisPositions));
-        logGaborNormImage(i, noisePositions) = normalIrisMean;
-%     else
-%         normalIrisMean = 0;
+%         logGaborNormImage(i, noisePositions) = normalIrisMean;
+    else
+        epsilon = 0.0001; % avoiding NaN values
+        normalIrisMean = epsilon;
     end
-%     logGaborNormImage(i, noisePositions) = normalIrisMean;
+    logGaborNormImage(i, noisePositions) = normalIrisMean;
 end
 
 
@@ -44,16 +44,12 @@ for i = 1:rows-1
     s = logGaborNormImage(i + 1, :);
     
     % computing the probability mass function of the both rows
-    p = r./sum(r);
-    q = s./sum(s);
+    p = r./sum(r, 2);
+    q = s./sum(s, 2);
     
     % information distance
     J(1, i) = relativeEntropy(p, q) + relativeEntropy(q, p);
 end
-
-% figuring out if a NaN has ocurred
-findNaN = isnan(J);
-J(findNaN) = 0;
 
 % computing the FCM measure
 FCM = mean(J)

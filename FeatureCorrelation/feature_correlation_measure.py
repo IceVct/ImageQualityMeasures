@@ -41,12 +41,13 @@ def feature_correlation_measure(log_gabor_norm_image, norm_iris_mask_image):
             normal_iris_mean = np.mean(log_gabor_norm_image[i, normal_iris_positions[0]])
 
             # replacing the noise positions with the mean values computed
-            log_gabor_norm_image[i, noise_positions[0]] = normal_iris_mean
-        # else:
-        #     normal_iris_mean = 0
+            # log_gabor_norm_image[i, noise_positions[0]] = normal_iris_mean
+        else:
+            epsilon = 0.00001
+            normal_iris_mean = epsilon # avoiding NaN values
 
         # replacing the noise positions with the mean values computed
-        # log_gabor_norm_image[i, noise_positions[0]] = normal_iris_mean        
+        log_gabor_norm_image[i, noise_positions[0]] = normal_iris_mean        
 
     # computing the correlation measure between the filtered image rows
     for i in range(1, n_rows):
@@ -54,15 +55,15 @@ def feature_correlation_measure(log_gabor_norm_image, norm_iris_mask_image):
         s = log_gabor_norm_image[i, :]
 
         # computing the probability mass function of both row vectors
-        p = r/np.sum(r)
-        q = s/np.sum(s)
+        p = r/np.sum(r, axis=0)
+        q = s/np.sum(s, axis=0)
 
         # computing the information distance J
         j[0, i - 1] = relative_entropy(p, q) + relative_entropy(q, p)
 
     # checking if any NaN ocurred, in order to avoid errors
-    find_nan = np.where(np.isnan(j))
-    j[find_nan] = 0
+    # find_nan = np.where(np.isnan(j))
+    # j[find_nan] = 0
 
     ### Ending the measure computation ###
     # computing the fcm measure

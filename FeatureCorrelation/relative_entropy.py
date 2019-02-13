@@ -6,10 +6,7 @@ import numpy as np
 def relative_entropy(input_vector1, input_vector2):
     rel_entropy = 0.0
 
-    # Computing all the log2 and multiplications element wise, before the sum
-    rel_entropy = input_vector1*np.log2(input_vector1/input_vector2)
-
-    # computing the sum
-    rel_entropy = sum(rel_entropy)
+    # Computing the Kullback-Leibler information distance
+    rel_entropy = np.sum(input_vector1*np.log2(input_vector1/input_vector2), axis=0)
 
     return rel_entropy
