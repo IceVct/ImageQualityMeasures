@@ -7,16 +7,11 @@ function [fcmMeasure] = featureCorrelationMeasure(logGaborNormImage, normMaskIma
 
 %% Variables initialization
 [rows, cols] = size(logGaborNormImage);
-N = rows - 1;
 
 % information distance weighting variables
 Beta = 0.005;
 alpha = 1/Beta;
-r = zeros(1, cols);
-s = zeros(1, cols);
-p = zeros(1, cols);
-q = zeros(1, cols);
-J = zeros(1, N);
+invalidRows = [];
 
 %% Computing the measure
 
@@ -27,14 +22,22 @@ for i = 1:rows
     normalIrisPositions = find(normMaskImage(i, :) == 255);
     if(length(normalIrisPositions) > 0)
         normalIrisMean = mean(logGaborNormImage(i, normalIrisPositions));
-%         logGaborNormImage(i, noisePositions) = normalIrisMean;
+        logGaborNormImage(i, noisePositions) = normalIrisMean;
     else
-        epsilon = 0.0001; % avoiding NaN values
-        normalIrisMean = epsilon;
+          invalidRows = [invalidRows i];
+%         epsilon = 10e-10; % avoiding NaN values
+%         normalIrisMean = epsilon;
     end
-    logGaborNormImage(i, noisePositions) = normalIrisMean;
+%     logGaborNormImage(i, noisePositions) = normalIrisMean;
 end
 
+logGaborNormImage(invalidRows, :) = [];
+[rows, cols] = size(logGaborNormImage);
+r = zeros(1, cols);
+s = zeros(1, cols);
+p = zeros(1, cols);
+q = zeros(1, cols);
+J = zeros(1, rows - 1);
 
 % looping through the image rows and computing the correlation measures
 % between them

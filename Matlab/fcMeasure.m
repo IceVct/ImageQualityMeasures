@@ -12,7 +12,7 @@ logGaborImage = zeros(rows, cols);
 %% Performing the Log Gabor Filter
 % [EO, BP] = loggaborconvolve(normIrisSeg, 4, 6, 3, 2.4, 0.38, 1.3, 0, 0);
 % logGaborImage = abs(EO{4, 1});
-[filteredImage, ~] = masekloggaborconvolve(normIrisSeg, 18, 0.5);
+[filteredImage, ~] = masekloggaborconvolve(normIrisSeg, 22, 0.5);
 logGaborImage = abs(filteredImage);
 
 % for i = 1:rows

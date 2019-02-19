@@ -7,6 +7,7 @@ import matplotlib.cm as cm
 import cv2
 import numpy as np
 import sys
+from timeit import default_timer as timer
 
 # Most of the variables names are following the paper Feature correlation evaluation approach for iris feature
 # quality measure (by Craig Belcher, Yingzi Du, Zhi Zhou and Robert Ives) nomenclature.
