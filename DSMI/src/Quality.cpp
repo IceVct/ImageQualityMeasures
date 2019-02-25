@@ -184,7 +184,7 @@ double dsmiQuality(Mat inputImage, float coeficientThreshold){
 
     tempQuality = S/neighboorsVariance;
     Scalar sums = sum(tempQuality);
-    cout << sums << endl;
+ //   cout << sums << endl;
     qualityMeasured = sum(tempQuality)[0]/nPixels;
     
     // normalizing the quality measured from [0,infinite) to [0, 1)]
