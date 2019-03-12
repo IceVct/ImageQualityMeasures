@@ -8,8 +8,8 @@ import random
 # Options:
     # 1. MICHE;
     # 2. UBIRISv1;
-    # 3. UBIRISv2;
-    # 4. Warsaw;
+    # 3. Warsaw;
+    # 4. UBIRISv2;
     # else: general implementation for a dataset
 # OBS: INSTEAD OF THE INPUT FOLDER AS THE OTHERS, THE UBIRISV2 DATASET MUST RECEIVE AN INPUT FILE NAMED UBIRISv2ValidImages.txt
 
@@ -106,7 +106,6 @@ def ubiris_v2(input_file, selected_subjects):
     for subject in selected_subjects:
         subject_images = []
         subject_images = [img for img in images if subject in img]
-        print subject, subject_images
         image_filenames.extend(subject_images)
 
     return image_filenames
@@ -181,8 +180,7 @@ def main():
                 selected_subjects = f.read().splitlines()
 
             image_filenames = ubiris_v2(input_file, selected_subjects)
-            print len(image_filenames)
-                
+    
         else:
             raise ValueError('Amount of arguments passed for the UBIRISv2 dataset invalid! Must be 5')
     else:

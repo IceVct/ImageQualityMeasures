@@ -24,7 +24,7 @@ qualities = []
 max_value = 0
 min_value = 1
 for line in fid_input_file:
-    executable = ['/home/victor/UnB/TCC/Codigos/IrisRecogSys/iris_recog', line.rstrip(), '0.8']
+    executable = ['/home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/DSMI/dsmi_quality', line.rstrip(), '0.8']
     dsmi_quality = check_output(executable)
     fid_output_file.writelines([line.rstrip(), ' ', dsmi_quality, '\n'])
     if(float(dsmi_quality) > max_value):

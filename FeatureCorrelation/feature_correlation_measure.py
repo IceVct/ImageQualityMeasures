@@ -14,7 +14,8 @@ def feature_correlation_measure(log_gabor_norm_image, norm_iris_mask_image):
     n_cols = log_gabor_norm_image.shape[1]
 
     # Parameters for normalize, according to the reference paper (MORE INFO IN THE MAIN FUNCTION)
-    beta = 0.005
+    # beta = 0.005
+    beta = 0.294
     alpha = 1/beta
 
      # in case that there are only masked pixels in the row, which means that 
@@ -52,6 +53,12 @@ def feature_correlation_measure(log_gabor_norm_image, norm_iris_mask_image):
         # from the image
         n_rows = log_gabor_norm_image.shape[0]
         n_cols = log_gabor_norm_image.shape[1]
+    
+    # it means that the whole normalized mask was occlusion, so the segmentation 
+    # has a 0 score
+    if n_rows < 1:
+        print 0.
+        return 0.
 
     # pre initializing arrays that will be used, in order to save some processing time
     r = np.zeros((1, n_cols), dtype=float)
@@ -76,7 +83,8 @@ def feature_correlation_measure(log_gabor_norm_image, norm_iris_mask_image):
     
     # computing the fcm measure
     fcm = np.mean(j)
-    print 'FCM = ' + str(fcm)
+    # print 'FCM = ' + str(fcm)
+    print str(fcm)
 
     # computing the measure normalization
     if 0 <= fcm and fcm <= beta:
