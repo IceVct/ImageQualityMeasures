@@ -84,7 +84,7 @@ def feature_correlation_measure(log_gabor_norm_image, norm_iris_mask_image):
     # computing the fcm measure
     fcm = np.mean(j)
     # print 'FCM = ' + str(fcm)
-    print str(fcm)
+    # print str(fcm)
 
     # computing the measure normalization
     if 0 <= fcm and fcm <= beta:
