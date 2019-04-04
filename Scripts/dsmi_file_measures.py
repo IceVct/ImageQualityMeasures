@@ -10,12 +10,11 @@ output_file = sys.argv[2]
 
 with open(input_file) as f:
 	lines = f.readlines()
-fid_output_file = open(output_file, "w")
 
-for line in lines[:-1]:
-	split_string = line.split(' ')
-	measure = split_string[1]
-	fid_output_file.write(measure)
-
-
-fid_output_file.close()
+threshold = 0.75
+with open(output_file, 'w') as f:
+	for line in lines[:-1]:
+		image, measure = line.split(' ')
+		# checking if is higher than the threshold
+		if float(measure) > threshold:
+			f.write(image)
