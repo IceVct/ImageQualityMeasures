@@ -19,7 +19,7 @@ python dsmi_file_measures.py ~/UnB/TCC/IrisDatabases/UBIRISv2/ubirisv2_test_dsmi
 ##################################################################################################################
 
 ################################GENERATING MATCHING FILES#########################################################
-#Generating files with all the files that has a DSMI value higher than the computed threshold = 0.75897357 (0.75) in order
+#Generating files with all the files that has a DSMI value higher than the computed threshold in order
 # to perform matching
 
 # warsaw
