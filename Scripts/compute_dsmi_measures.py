@@ -12,6 +12,7 @@ from subprocess import check_output
 # Accessing the inputs from the terminal
 input_file = sys.argv[1] # the input .txt file
 output_file = sys.argv[2] # the output .txt file
+extra_input = sys.argv[3] # in the case that a string must be attached to the filename string
 
 fid_input_file = open(input_file, "r")
 fid_output_file = open(output_file, "w")
@@ -24,7 +25,12 @@ qualities = []
 max_value = 0
 min_value = 1
 for line in fid_input_file:
-    executable = ['/home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/DSMI/dsmi_quality', line.rstrip(), '0.8']
+    # if there are more than 3 inputs, it means that a string must be concatenated
+    if len(sys.argv) > 3:
+        executable = ['/home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/DSMI/dsmi_quality', "%s%s" % (extra_input, line.rstrip()), '0.8']
+    else:
+        executable = ['/home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/DSMI/dsmi_quality', line.rstrip(), '0.8']
+
     dsmi_quality = check_output(executable)
     fid_output_file.writelines([line.rstrip(), ' ', dsmi_quality, '\n'])
     if(float(dsmi_quality) > max_value):

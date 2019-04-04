@@ -4,7 +4,7 @@ import sys
 import numpy as np
 from subprocess import check_output
 
-# Script for computing the FCM metric threshold for all the databases, using its training set
+# Script for computing the DSMI metric threshold, using the databases training set
 
 def main():
     amount_arguments = len(sys.argv)
