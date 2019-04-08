@@ -1,3 +1,3 @@
-# ./matchingWithDsmi.sh
+./matchingWithDsmi.sh
 ./matchingWithFCE.sh
-# ./matchingWithBothMeasures
+./matchingWithBothMeasures.sh

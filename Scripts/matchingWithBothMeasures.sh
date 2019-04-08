@@ -10,20 +10,17 @@
 # TODO - Fazer arquivo que ve as medidas FCE dos arquivos que passaram no DSMI
 # e salva com o nome <database>_test_dsmi_fce_stats
 
-# Before this step, a FCE computation was done for all files. So only the ones that are in the DSMI files
-# are considered to the final matching
-
 # warsaw
-python compare_file_measures.py ~/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/warsaw_test_dsmi_fce_stats.txt /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/warsaw_test_dsmi_fce.txt 0.71
+python compare_dsmi_fce.py /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/ warsaw_test_dsmi.txt warsaw_test_fce.txt warsaw_test_dsmi_fce.txt
 
 # miche
-python compare_file_measures.py ~/UnB/TCC/IrisDatabases/MICHE/miche_test_dsmi_fce_stats.txt /home/vavieira/UnB/TCC/IrisDatabases/MICHE/miche_test_dsmi_fce.txt 0.71
+python compare_dsmi_fce.py /home/vavieira/UnB/TCC/IrisDatabases/MICHE/ miche_test_dsmi.txt miche_test_fce.txt miche_test_dsmi_fce.txt
 
 # ubirisv1
-python compare_file_measures.py ~/UnB/TCC/IrisDatabases/UBIRISv1/ubirisv1_test_dsmi_fce_stats.txt /home/vavieira/UnB/TCC/IrisDatabases/UBIRISv1/ubirisv1_test_dsmi_fce.txt 0.71
+python compare_dsmi_fce.py /home/vavieira/UnB/TCC/IrisDatabases/UBIRISv1/ ubirisv1_test_dsmi.txt ubirisv1_test_fce.txt ubirisv1_test_dsmi_fce.txt
 
 # ubirisv2
-python compare_file_measures.py ~/UnB/TCC/IrisDatabases/UBIRISv2/ubirisv2_test_dsmi_fce_stats.txt /home/vavieira/UnB/TCC/IrisDatabases/UBIRISv2/ubirisv2_test_dsmi_fce.txt 0.71
+python compare_dsmi_fce.py /home/vavieira/UnB/TCC/IrisDatabases/UBIRISv2/ ubirisv2_test_dsmi.txt ubirisv2_test_fce.txt ubirisv2_test_dsmi_fce.txt
 
 ##################################################################################################################
 
