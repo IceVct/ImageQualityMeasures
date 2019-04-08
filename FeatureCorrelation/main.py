@@ -50,7 +50,7 @@ def main():
     # final measure
     image_quality = fcm*d*o
     # print 'image quality = ' + str(image_quality)
-    print str(image_quality)
+    print image_quality
 
 
 if __name__ == "__main__":

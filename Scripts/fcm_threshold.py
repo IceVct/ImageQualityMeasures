@@ -30,7 +30,10 @@ def main():
     for i in range(0, len(norm_images)):
         executable = ['python', '/home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/FeatureCorrelation/main.py', norm_images[i], masks[i], circle_params[i]]
         fcm =  check_output(executable)
-        computed_fcm.append(float(fcm.rstrip()))
+        if '\n' in fcm:
+            x = fcm.split('\n')
+            fcm = x[0]
+        computed_fcm.append(float(fcm))
     
 
     mean = np.mean(computed_fcm)

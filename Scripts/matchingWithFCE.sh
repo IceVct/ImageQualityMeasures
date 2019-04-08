@@ -1,21 +1,22 @@
+#!/bin/bash
+
 # Script for running all necessary commands in order to perform 
 # alliris recognition from OSIRISv4.1 using the FCE quality measure
 
 ################################GENERATING FILES################################################################# 
-#Generating files with all the files that has a FCE value higher than the computed threshold = 
+#Generating files with all the files that has a FCE value higher than the computed threshold = 0.7158462545478076 (0.71)
 
-#TODO
 # warsaw
-python fcm_file_measures.py ~/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/warsaw_test_fce_stats.txt /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/warsaw_test_fce.txt
+python compare_file_measures.py ~/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/warsaw_test_fce_stats.txt /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/warsaw_test_fce.txt 0.71
 
 # miche
-python fcm_file_measures.py ~/UnB/TCC/IrisDatabases/MICHE/miche_test_fce_stats.txt /home/vavieira/UnB/TCC/IrisDatabases/MICHE/miche_test_fce.txt
+python compare_file_measures.py ~/UnB/TCC/IrisDatabases/MICHE/miche_test_fce_stats.txt /home/vavieira/UnB/TCC/IrisDatabases/MICHE/miche_test_fce.txt 0.71
 
 # ubirisv1
-python fcm_file_measures.py ~/UnB/TCC/IrisDatabases/UBIRISv1/ubirisv1_test_fce_stats.txt /home/vavieira/UnB/TCC/IrisDatabases/UBIRISv1/ubirisv1_test_fce.txt
+python compare_file_measures.py ~/UnB/TCC/IrisDatabases/UBIRISv1/ubirisv1_test_fce_stats.txt /home/vavieira/UnB/TCC/IrisDatabases/UBIRISv1/ubirisv1_test_fce.txt 0.71
 
 # ubirisv2
-python fcm_file_measures.py ~/UnB/TCC/IrisDatabases/UBIRISv2/ubirisv2_test_fce_stats.txt /home/vavieira/UnB/TCC/IrisDatabases/UBIRISv2/ubirisv2_test_fce.txt
+python compare_file_measures.py ~/UnB/TCC/IrisDatabases/UBIRISv2/ubirisv2_test_fce_stats.txt /home/vavieira/UnB/TCC/IrisDatabases/UBIRISv2/ubirisv2_test_fce.txt 0.71
 
 ##################################################################################################################
 
