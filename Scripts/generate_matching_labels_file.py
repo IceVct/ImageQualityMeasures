@@ -15,20 +15,21 @@ output_file = sys.argv[3]
 database = sys.argv[4]
 
 # reading files and inserting class of images into three lists
-with open("%s%s" % (input_folder, dsmi_file), "r") as f:
+with open("%s%s" % (input_folder, matching_file), "r") as f:
     content_matching_file = f.read().splitlines()
 
-# TODO
-if database == 'MICHE':
-    content_matching_file = [f.split('/')[-1].split('.')[0] for f in content_dsmi_file]
+# Depending on the database, 
+labels = []
+print matching_file, database
+if database == 'MICHE' or database == 'UBIRISv2':
+    labels = ["0" if line.split('_')[0] in line.split(' ')[-1] else "1" for line in content_matching_file]
 elif database == 'UBIRISv1':
-    content_matching_file = [f.split('/')[-1].split('.')[0] for f in content_dsmi_file]
-elif database == 'UBIRISv2':
-    content_matching_file = [f.split('/')[-1].split('.')[0] for f in content_dsmi_file]
+    labels = ["0" if line.split('/')[1] in line.split(' ')[-1] else "1" for line in content_matching_file]
+elif database == 'UBIRISv1_FCE':
+    labels = ["0" if line.split('_')[1] in line.split(' ')[-1] else "1" for line in content_matching_file]
 else:
-    content_matching_file = [f.split('/')[-1].split('.')[0] for f in content_dsmi_file]
+    labels = ["0" if line.split('/')[0] in line.split(' ')[-1] else "1" for line in content_matching_file]
 
 
 with open("%s%s" % (input_folder, output_file), "w") as f:
-    common_images = list(set(content_dsmi_file).intersection(set(content_fce_file)))
-    [f.writelines([image, '\n']) for image in common_images]
+    [f.writelines([label, '\n']) for label in labels]
