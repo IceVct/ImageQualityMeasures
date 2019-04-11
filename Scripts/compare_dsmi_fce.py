@@ -12,11 +12,14 @@ input_folder = sys.argv[1]
 dsmi_file = sys.argv[2] 
 fce_file = sys.argv[3]
 output_file = sys.argv[4]
+database = sys.argv[5] if len(sys.argv) == 6 else '.'
 
 # reading files and inserting class of images into three lists
 with open("%s%s" % (input_folder, dsmi_file), "r") as f:
     content_dsmi_file = f.read().splitlines()
-content_dsmi_file = [f.split('/')[-1].split('.')[0] for f in content_dsmi_file]
+
+if database.lower() != 'warsaw':
+    content_dsmi_file = [f.split('/')[-1].split('.')[0] for f in content_dsmi_file]
 
 with open("%s%s" % (input_folder, fce_file), "r") as f:
     content_fce_file = f.read().splitlines()

@@ -11,7 +11,7 @@
 # e salva com o nome <database>_test_dsmi_fce_stats
 
 # warsaw
-python compare_dsmi_fce.py /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/ warsaw_test_dsmi.txt warsaw_test_fce.txt warsaw_test_dsmi_fce.txt
+python compare_dsmi_fce.py /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/ warsaw_test_dsmi.txt warsaw_test_fce.txt warsaw_test_dsmi_fce.txt warsaw
 
 # miche
 python compare_dsmi_fce.py /home/vavieira/UnB/TCC/IrisDatabases/MICHE/ miche_test_dsmi.txt miche_test_fce.txt miche_test_dsmi_fce.txt

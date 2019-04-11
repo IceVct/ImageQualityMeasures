@@ -13,6 +13,15 @@ input_file_normalized_images = sys.argv[1]
 input_file_normalized_masks = sys.argv[2] 
 input_file_circle_params = sys.argv[3]
 output_file = sys.argv[4]
+database = sys.argv[5] if len(sys.argv) == 6 else '.'
+
+# IF THE DATABASE IS WARSAW, THEN ITS A SPECIAL CASE
+warsaw_dict = {}
+if database.lower() == 'warsaw':
+    with open('/home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/warsaw_subject_map.txt', "r") as f:
+        for line in f:
+            (key, value) = line.split("->")
+            warsaw_dict[key] = value.rstrip()
 
 # reading files and inserting class of images into three lists
 with open(input_file_normalized_images, "r") as f:
@@ -40,6 +49,11 @@ with open(output_file, "w") as f:
 
     for i in range(0, len(content_normalized_images)):
         image_file = content_normalized_images[i].split('/')[-1].split('_imno')[0]
+        
+        # changing the image file if the database is wasrsaw
+        if database.lower() == 'warsaw':
+            image_file = "%s/session1/%s.jpg" % (warsaw_dict[image_file], image_file)
+        
         executable = ['python', '/home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/FeatureCorrelation/main.py', content_normalized_images[i], content_normalized_masks[i], content_circle_params[i]]
         quality = check_output(executable)
 
