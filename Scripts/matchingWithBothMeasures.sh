@@ -7,9 +7,6 @@
 #Generating files with all the files that has DSMI value higher than 0.75 and 
 # a FCE value higher than 0.71
 
-# TODO - Fazer arquivo que ve as medidas FCE dos arquivos que passaram no DSMI
-# e salva com o nome <database>_test_dsmi_fce_stats
-
 # warsaw
 python compare_dsmi_fce.py /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/ warsaw_test_dsmi.txt warsaw_test_fce.txt warsaw_test_dsmi_fce.txt warsaw
 

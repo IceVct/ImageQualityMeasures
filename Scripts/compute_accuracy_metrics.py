@@ -104,23 +104,23 @@ def main():
     # Computing FNR in order to compute EER
     fnr = 1 - tpr
     eer_threshold = thresholds[np.nanargmin(np.absolute((fnr - fpr)))]
-    print 'all ', eer_threshold
     eer = fpr[np.nanargmin(np.absolute((fnr - fpr)))]
+    print 'all EER = ', eer
 
     dsmi_fnr = 1 - dsmi_tpr
     dsmi_eer_threshold = dsmi_thresholds[np.nanargmin(np.absolute((dsmi_fnr - dsmi_fpr)))]
-    print 'dsmi ', dsmi_eer_threshold
     dsmi_eer = dsmi_fpr[np.nanargmin(np.absolute((dsmi_fnr - dsmi_fpr)))]
+    print 'dsmi EER = ', dsmi_eer
 
     fce_fnr = 1 - fce_tpr
     fce_eer_threshold = fce_thresholds[np.nanargmin(np.absolute((fce_fnr - fce_fpr)))]
-    print 'fce ', fce_eer_threshold
     fce_eer = fce_fpr[np.nanargmin(np.absolute((fce_fnr - fce_fpr)))]
+    print 'fce EER = ', fce_eer
 
     both_fnr = 1 - both_tpr
     both_eer_threshold = both_thresholds[np.nanargmin(np.absolute((both_fnr - both_fpr)))]
-    print 'both ', both_eer_threshold
     both_eer = both_fpr[np.nanargmin(np.absolute((both_fnr - both_fpr)))]
+    print 'both EER = ', both_eer
 
     # Computing the daugman index
     print 'All d\' = ', compute_daugman_index(hd_results, eer_threshold)

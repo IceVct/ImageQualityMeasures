@@ -12,7 +12,7 @@ from subprocess import check_output
 # Accessing the inputs from the terminal
 input_file = sys.argv[1] # the input .txt file
 output_file = sys.argv[2] # the output .txt file
-extra_input = sys.argv[3] # in the case that a string must be attached to the filename string
+extra_input = sys.argv[3] if len(sys.argv) > 3 else 'x' # in the case that a string must be attached to the filename string
 
 fid_input_file = open(input_file, "r")
 fid_output_file = open(output_file, "w")
