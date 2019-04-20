@@ -15,14 +15,19 @@ from subprocess import check_output
 input_folder = sys.argv[1]
 input_file = sys.argv[2] 
 output_file = sys.argv[3]
+database = sys.argv[4]
 
 # reading the input file
 with open("%s%s" % (input_folder, input_file), "r") as f:
     input_content = f.read().splitlines()
 
-#example 0001left/session1/IMG_0094.jpg
+#example warsaw 0001left/session1/IMG_0094.jpg
+#example ubirisv1 Sessao{i}/subject/IMG_xxxx.jpg
 # Creating a tuple for each subject and image file name 
-subject_map = [(line.split('/')[-1].split('.')[0], line.split('/')[0]) for line in input_content]
+if database.lower() == 'warsaw':
+    subject_map = [(line.split('/')[-1].split('.')[0], line.split('/')[0]) for line in input_content]
+elif database.lower() == 'ubirisv1':
+    subject_map = [(line.split('/')[-1].split('.')[0], line.split('/')[1]) for line in input_content]
 
 # Saving the output file
 with open("%s%s" % (input_folder, output_file), "w") as f:
