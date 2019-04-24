@@ -5,6 +5,7 @@ Steps that must be followed in order to run the scripts in the right order, from
 - General steps
 
     1. Create the txt file with the desired images to process for each database;
+        1.1. The script used for splitting the database into train and test is split_databases.py;
     2. Change both Matching/ and Process/ files in IrisDatabases/Test-Osiris for each database;
     3. Run osiris in all images;
 
