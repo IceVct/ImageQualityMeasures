@@ -23,34 +23,34 @@ for i = 1:amountImages
    imagename = splitImagename{1};
    extension = splitImagename(2);
    imageFilename = [folder database extraFolder images{i}];
-   outputFilename = [folder database extraFolder imagename];
+   outputFilename = [folder database extraFolder];
    im = imread(imageFilename); 
    % Generating the distortions and saving the image
    for j = 1:4
-       s = strcat(outputFilename, '_gaussian', num2str(gaussian(j)), '.', extension);
+       s = strcat(imagename, '_gaussian', num2str(gaussian(j)), '.', extension);
        fprintf(fidOut, '%s\n', s{1});
-       imwrite(imgaussfilt(im, gaussian(j)), s{1});
+%        imwrite(imgaussfilt(im, gaussian(j)), [outputFilename s{1}]);
        
-       s = strcat(outputFilename, '_impulse', num2str(impulseNoise(j)), '.', extension);
+       s = strcat(imagename, '_impulse', num2str(impulseNoise(j)), '.', extension);
        fprintf(fidOut, '%s\n', s{1});
-       imwrite(imnoise(im, 'salt & pepper', impulseNoise(j)), s{1});
+%        imwrite(imnoise(im, 'salt & pepper', impulseNoise(j)), [outputFilename s{1}]);
        
-       s = strcat(outputFilename, '_over_exposure', num2str(overExposure(j)), '.', extension);
+       s = strcat(imagename, '_over_exposure', num2str(overExposure(j)), '.', extension);
        fprintf(fidOut, '%s\n', s{1});
-       imwrite(im + overExposure(j), s{1});
+%        imwrite(im + overExposure(j), [outputFilename s{1}]);
        
-       s = strcat(outputFilename, '_motion_blur', num2str(motionBlur(j)), '.', extension);
+       s = strcat(imagename, '_motion_blur', num2str(motionBlur(j)), '.', extension);
        fprintf(fidOut, '%s\n', s{1});
        H = fspecial('motion', motionBlur(j), motionBlur(j));
-       imwrite(imfilter(im, H, 'replicate'), s{1});
+%        imwrite(imfilter(im, H, 'replicate'), [outputFilename s{1}]);
        
-       s = strcat(outputFilename, '_wgn', num2str(wgn(j)), '.', extension);
+       s = strcat(imagename, '_wgn', num2str(wgn(j)), '.', extension);
        fprintf(fidOut, '%s\n', s{1});
-       imwrite(imnoise(im, 'gaussian', 0, wgn(j)), s{1});
+%        imwrite(imnoise(im, 'gaussian', 0, wgn(j)), [outputFilename s{1}]);
        
-       s = strcat(outputFilename, '_jpeg2000_', num2str(jpeg2000(j)), '.jp2');
+       s = strcat(imagename, '_jpeg2000_', num2str(jpeg2000(j)), '.jp2');
        fprintf(fidOut, '%s\n', s);
-       imwrite(im, s, 'jp2', 'CompressionRatio', jpeg2000(j));
+%        imwrite(im, [outputFilename s], 'jp2', 'CompressionRatio', jpeg2000(j));
    end
 end
 

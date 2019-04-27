@@ -24,11 +24,22 @@ with open("%s%s" % (input_folder, input_file), "r") as f:
 #example warsaw 0001left/session1/IMG_0094.jpg
 #example ubirisv1 Sessao{i}/subject/IMG_xxxx.jpg
 # Creating a tuple for each subject and image file name 
-if database.lower() == 'warsaw':
-    subject_map = [(line.split('/')[-1].split('.')[0], line.split('/')[0]) for line in input_content]
-elif database.lower() == 'ubirisv1':
-    subject_map = [(line.split('/')[-1].split('.')[0], line.split('/')[1]) for line in input_content]
+subject_map = []
+for line in input_content:
+    if database.lower() == 'warsaw':
+        subj = line.split('/')[0]
+    elif database.lower() == 'ubirisv1':
+        subj = ('/').join(line.split('/')[:2])
+    
+    
+    filename_split = line.split('/')[-1].split('.')
+    if len(filename_split) > 2:
+        filename = ('.').join(filename_split[:2])
+    else:
+        filename = filename_split[0]
 
+    subject_map.append((filename, subj)) 
+    
 # Saving the output file
 with open("%s%s" % (input_folder, output_file), "w") as f:
     [f.writelines([subject[0], '->', subject[1], '\n']) for subject in subject_map]

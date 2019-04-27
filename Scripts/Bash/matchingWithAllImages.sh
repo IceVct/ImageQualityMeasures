@@ -9,7 +9,6 @@
 python generate_matching_file.py /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/warsaw_test.txt /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/warsaw_matching_test.txt
 
 # miche
-
 python generate_matching_file.py /home/vavieira/UnB/TCC/IrisDatabases/MICHE/miche_test.txt /home/vavieira/UnB/TCC/IrisDatabases/MICHE/miche_test_matching.txt
 
 # ubirisv1

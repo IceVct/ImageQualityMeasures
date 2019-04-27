@@ -13,15 +13,21 @@ input_file_normalized_images = sys.argv[1]
 input_file_normalized_masks = sys.argv[2] 
 input_file_circle_params = sys.argv[3]
 output_file = sys.argv[4]
-database = sys.argv[5] if len(sys.argv) == 6 else '.'
+database = sys.argv[5] if len(sys.argv) > 5 else '.'
+map_file = sys.argv[6] if len(sys.argv) == 7 else ''
 
 # IF THE DATABASE IS WARSAW, THEN ITS A SPECIAL CASE
-warsaw_dict = {}
+special_case_dict = {}
 if database.lower() == 'warsaw':
-    with open('/home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/warsaw_subject_map.txt', "r") as f:
+    with open('/home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/%s.txt' % map_file, "r") as f:
         for line in f:
             (key, value) = line.split("->")
-            warsaw_dict[key] = value.rstrip()
+            special_case_dict[key] = value.rstrip()
+elif database.lower() == 'ubirisv1':
+    with open('/home/vavieira/UnB/TCC/IrisDatabases/UBIRISv1/%s.txt' % map_file, "r") as f:
+        for line in f:
+            (key, value) = line.split("->")
+            special_case_dict[key] = value.rstrip()
 
 # reading files and inserting class of images into three lists
 with open(input_file_normalized_images, "r") as f:
@@ -52,14 +58,19 @@ with open(output_file, "w") as f:
         
         # changing the image file if the database is wasrsaw
         if database.lower() == 'warsaw':
-            image_file = "%s/session1/%s.jpg" % (warsaw_dict[image_file], image_file)
+            image_file = "%s/session1/%s.jpg" % (special_case_dict[image_file], image_file)
+        elif database.lower() == 'ubirisv1':
+            image_file = "%s/%s.jpg" % (special_case_dict[image_file], image_file) if "jpeg2000" not in image_file else "%s/%s.jp2" % (special_case_dict[image_file], image_file)
         
         executable = ['python', '/home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/FeatureCorrelation/main.py', content_normalized_images[i], content_normalized_masks[i], content_circle_params[i]]
         quality = check_output(executable)
+        
+        # avoiding two 0.0 measures error
+        quality = quality.split('\n')[0]
 
         print image_file, quality
 
-        f.writelines([image_file, ' ', quality])
+        f.writelines([image_file, ' ', quality, '\n'])
         qualities.append(float(quality))
 
         if float(quality) > max_value:
