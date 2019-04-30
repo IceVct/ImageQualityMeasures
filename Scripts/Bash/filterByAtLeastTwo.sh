@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script that generates files for at least two ocurrences for all databses
+# Script that generates files for at least two ocurrences for all databases
 
 # MICHE
 python check_for_two_ocurrences.py /home/vavieira/UnB/TCC/IrisDatabases/MICHE/ miche_test_dsmi.txt miche

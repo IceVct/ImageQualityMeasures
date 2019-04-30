@@ -1,0 +1,4 @@
+./MatchingWithDistortions/matchingWithAllImages.sh
+./MatchingWithDistortions/matchingWithDsmi.sh
+./MatchingWithDistortions/matchingWithFCE.sh
+./MatchingWithDistortions/matchingWithBothMeasures.sh

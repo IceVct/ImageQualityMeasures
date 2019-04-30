@@ -46,7 +46,7 @@ for i in subjects:
 print counter
 
 # Saving only the subjects that has 2 ocurrences
-with open("%s%s_two.txt" % (input_folder, output_file), "w") as f:
+with open("%s%s_filtered.txt" % (input_folder, output_file), "w") as f:
     subj = ''
     for line in file_content:
         if database.lower() == 'miche' or database.lower() == 'ubirisv2':
