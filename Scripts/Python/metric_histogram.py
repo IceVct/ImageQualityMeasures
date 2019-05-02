@@ -24,6 +24,9 @@ def main():
     input_file_with_distortion = sys.argv[3]
     distortion_name = sys.argv[4]
 
+    if '_' in distortion_name:
+        distortion_name = distortion_name.replace('_', ' ', 1)
+
     # reading the files
     with open("%s%s" % (input_folder, input_file_no_distortion), 'r') as f:
         no_distortion = f.read().splitlines()
@@ -40,8 +43,7 @@ def main():
 
     plt.plot(bins[:-1], distorted_norm_hist, marker=',')
     plt.plot(bins[:-1], no_distorted_norm_hist, marker=',')
-    plt.title(distortion_name)
-    plt.legend([distortion_name, 'Original'], loc='center right')
+    plt.legend([distortion_name, 'Original'], loc='upper left')
     plt.ylabel('Density')
     plt.xlabel('DSMI')
     plt.show()
