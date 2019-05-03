@@ -15,12 +15,12 @@ int main(int argsc, char *argsv[]){
 	// reading the input image
 	inputImage = imread(argsv[1], CV_LOAD_IMAGE_UNCHANGED);
 
-	// converting the input image to grayscale
+	// // converting the input image to grayscale
 	cvtColor(inputImage, grayScaleImage, CV_BGR2GRAY);
 
-	/*****CHECKING QUALITY **/
+	// /*****CHECKING QUALITY **/
 	double q = dsmiQuality(grayScaleImage, 0.2);
 	cout << q;
-		
+	
 	return 0;
 }

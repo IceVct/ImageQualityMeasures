@@ -23,9 +23,10 @@ def main():
     input_file_no_distortion = sys.argv[2]
     input_file_with_distortion = sys.argv[3]
     distortion_name = sys.argv[4]
+    show_plot = sys.argv[5]
 
-    if '_' in distortion_name:
-        distortion_name = distortion_name.replace('_', ' ', 1)
+    choosen_distortion = distortion_name.replace('_', ' ', 1) if '_' in distortion_name else distortion_name
+    output_img_filename = '%s%s.png' % (input_folder, distortion_name) if not 'paper' in input_file_with_distortion else '%s%s_paper.png' % (input_folder, distortion_name)
 
     # reading the files
     with open("%s%s" % (input_folder, input_file_no_distortion), 'r') as f:
@@ -43,10 +44,14 @@ def main():
 
     plt.plot(bins[:-1], distorted_norm_hist, marker=',')
     plt.plot(bins[:-1], no_distorted_norm_hist, marker=',')
-    plt.legend([distortion_name, 'Original'], loc='upper left')
+    plt.legend([choosen_distortion, 'Original'], loc='upper left')
     plt.ylabel('Density')
     plt.xlabel('DSMI')
-    plt.show()
+    plt.ylim(0, 0.3)
+    plt.savefig(output_img_filename)
+
+    if show_plot.lower() == 'true':
+        plt.show()
 
 
 if __name__ == "__main__":
