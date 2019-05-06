@@ -2,6 +2,6 @@
 CMakeFiles*
 CMakeCache*
 *.pyc
-/.vscode/
+*/.vscode/
 *.png
 
