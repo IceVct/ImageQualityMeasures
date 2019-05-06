@@ -25,9 +25,10 @@ float computeNeighboorsVariance(vector<float> inputVector, float neighboorsAvera
     return variance;
 }
 
-Mat stdfilt(Mat src, Mat neighborhood){
+// Standard deviation filter based neighborhood variance calculation method
+Mat computeNeighborhoodVariance(Mat src, Mat neighborhood){
       // define the output matrix
-    Mat out, maxs;
+    Mat maxs;
     Mat c1, c2;
     Point anchor;
     Mat srcPow2;
@@ -35,7 +36,6 @@ Mat stdfilt(Mat src, Mat neighborhood){
     neighborhood.convertTo(neighborhood, CV_32F);
     double delta = 0; 		
     anchor = Point( -1, -1 );	
-    out = src.clone();
     double n = sum(neighborhood)[0];
     double n1 = n - 1.0;
     // filter2D gives the man image with specified neighborhood
@@ -50,9 +50,8 @@ Mat stdfilt(Mat src, Mat neighborhood){
     c2 /= (n1*n);
 
     max(c1 - c2, 0.0, maxs);
-    sqrt(maxs, out);
     
-    return out;
+    return maxs;
 }
 
 // Function that finds all the local maximas from the input image, using the dilate operation with a kernel
@@ -64,6 +63,7 @@ void findLocalMaximas(Mat inputImage, Mat *s1SignStatistics, Mat *maxDifferences
 	Mat tempS1 = Mat(rows - 2, cols - 2, CV_32S, Scalar(0));
     LocalMaxima tmpLocalMaxima;
     vector<LocalMaxima> tempLocalMaximas;
+    Mat tempMaxDiffs = Mat(rows - 2, cols - 2, CV_32F, 0.0);
     // Mat tempNeighboorsVariance(rows - 2, cols - 2, CV_32F, 0.0);
     Mat tempNeighboorsVariance;
 
@@ -74,8 +74,7 @@ void findLocalMaximas(Mat inputImage, Mat *s1SignStatistics, Mat *maxDifferences
     morphElement.convertTo(morphElement, CV_8U);
 
     // Computing neighboors variance
-    tempNeighboorsVariance = stdfilt(inputImage, morphElement);
-    pow(tempNeighboorsVariance, 2.0, tempNeighboorsVariance);
+    tempNeighboorsVariance = computeNeighborhoodVariance(inputImage, morphElement);
 
     // Find max intensity difference from center to brighter and darker images.
 	dilate(inputImage, maximas, morphElement);
@@ -89,7 +88,8 @@ void findLocalMaximas(Mat inputImage, Mat *s1SignStatistics, Mat *maxDifferences
 	
 	for (int i = 1; i < rows - 1; i++)
 		for (int j = 1; j < cols - 1; j++){
-            if (abs(inputImage.at<float>(i, j) - maximas.at<float>(i, j)) < 0.000001){
+            if (inputImage.at<float>(i, j) > maximas.at<float>(i, j)){
+                // tempMaxDiffs.at<float>(i - 1, j - 1) = maxDiffs.at<float>(i, j);
                 tempS1.at<int>(i - 1, j - 1) = 1;
                 tmpLocalMaxima.x = i;
                 tmpLocalMaxima.y = j;
@@ -100,6 +100,7 @@ void findLocalMaximas(Mat inputImage, Mat *s1SignStatistics, Mat *maxDifferences
     // return values
     *s1SignStatistics = tempS1;
     *maxDifferences = maxDiffs(removeBordersROI);
+    // *maxDifferences = tempMaxDiffs;
     *localMaximas = tempLocalMaximas;
     *neighboorsVariance = tempNeighboorsVariance(removeBordersROI);
 }
@@ -120,19 +121,13 @@ void computeThresholdT(Mat inputImage, vector<LocalMaxima> localMaximas, float *
         col = localMaximas[i].y;
 
         // storing the neighboors
-        neighboors[0] = abs(inputImage.at<float>(row, col) - inputImage.at<float>(row - 1, col)); // top neighboor
-        neighboors[1] = abs(inputImage.at<float>(row, col) - inputImage.at<float>(row + 1, col)); // down neighboor
-        neighboors[2] = abs(inputImage.at<float>(row, col) - inputImage.at<float>(row, col + 1)); // right neighboor
-        neighboors[3] = abs(inputImage.at<float>(row, col) - inputImage.at<float>(row, col - 1)); // left neighboor
-
-        // computing the neighborhood average
-        meanStdDev(neighboors, neighboorsAverage, neighboorsVariance);
-        mean = neighboorsAverage.val[0];
-
-        t += mean/amountMaximas;
+        t += abs(inputImage.at<float>(row, col) - inputImage.at<float>(row - 1, col)) + // top neighboor
+            abs(inputImage.at<float>(row, col) - inputImage.at<float>(row + 1, col)) + // down neighboor
+            abs(inputImage.at<float>(row, col) - inputImage.at<float>(row, col + 1)) + // right neighboor
+            abs(inputImage.at<float>(row, col) - inputImage.at<float>(row, col - 1)); // left neighboor
     }
 
-    *threshold = t;
+    *threshold = t/amountMaximas;
 }
 
 // Function that computes the DSMI quality measure
@@ -174,30 +169,6 @@ double dsmiQuality(Mat inputImage, float coeficientThreshold){
     bool uniform = true, accumulate = false; // calcHist function parameters
     Mat histogram;
 
-    calcHist(&inputImage, 1, 0, Mat(), histogram, 1, &nHistBins, &histRange, uniform, accumulate);
-
-    // computing the percentage of occurrences of pixel values in the range [192, 255] (last bin) and from [0, 31] (first bin)
-    float percetageHighIntensityPixels = 0.0, percentageLowIntensityPixels = 0.0, finalPercentage = 0.0;
-    percetageHighIntensityPixels = histogram.at<float>(nHistBins - 1)/(float) nPixels;
-    percentageLowIntensityPixels = histogram.at<float>(0)/nPixels;
-    finalPercentage = percentageLowIntensityPixels + percetageHighIntensityPixels;
-
-    // VERIFICAR DEPOIS A PORCENTAGEM DE PIXELS COM INTENSIDADE BAIXA, APARENTEMENTE IMAGENS MUITO ESCURAS TAMBEM ESTAO SAINDO COM NOTA MUITO BOA
-
-    // if the percentage is lesser than the threshold, then the multiplier will be 1, else, it will be 1 - percentage
-    highIntensityMultiplier = finalPercentage >= coeficientThreshold ? 1 - finalPercentage : 1.0;
-
-    // computing the average value of all pixels from the normalized image
-    // normalizedImageAverage = mean(normalizedImage);
-    // cout << normalizedImageAverage << endl;
-    // imageAverage = normalizedImageAverage.val[0];
-    // cout << imageAverage << endl;
-
-    // if the imageAverage >= highIntensityThreshold, then the value will be normalized between the values [0.01, 0.99],
-    // invert proportional to the mean value. Ex: if the mean value is 0.75, then the multiplier is 0.99, if the mean is 1, then the mult is 0.01
-    // highIntensityMultiplier = imageAverage < highIntensityThreshold ? 1.0 : (1 - (0.98*((imageAverage - intensityPercentage)/(1 - intensityPercentage)) + 0.01));
-    // cout << highIntensityMultiplier << endl;
-
     // computing all the local maximas and maximum differences from the normalized image
     findLocalMaximas(normalizedImage, &S1, &maxDifferences, &localMaximas, &neighboorsVariance);
 
@@ -205,8 +176,9 @@ double dsmiQuality(Mat inputImage, float coeficientThreshold){
     computeThresholdT(normalizedImage, localMaximas, &T);
 
     // Comparing the max difference of each pixel to the threshold 
-    threshold(maxDifferences, S2, T, 1, THRESH_BINARY_INV);
+    S2 = (T > maxDifferences)/255;
     S2.convertTo(S2, CV_32S);
+
 
     // Computing the statistics of the coincidence pattern of the sign S1 and magnitude S2
     S = S1 & S2;
@@ -216,10 +188,11 @@ double dsmiQuality(Mat inputImage, float coeficientThreshold){
     neighboorsVariance += 0.00025;
 
     tempQuality = S/neighboorsVariance;
-    Scalar sums = sum(tempQuality);
-    nPixels = (rows - 2)*(cols - 2);
+    // Scalar sums = sum(tempQuality);
+    // nPixels = (rows - 2)*(cols - 2);
     qualityMeasured = sum(tempQuality)[0]/(float)nPixels;
     
     // normalizing the quality measured from [0,infinite) to [0, 1)]
-    return (1.0 - exp(-0.01*qualityMeasured))*highIntensityMultiplier; // 0.01 taken from the paper
+    // return (1.0 - exp(-0.01*qualityMeasured))*highIntensityMultiplier; // 0.01 taken from the paper
+    return (1.0 - exp(-0.01*qualityMeasured)); // 0.01 taken from the paper
 }

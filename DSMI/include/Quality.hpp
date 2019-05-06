@@ -25,7 +25,7 @@ typedef struct maximas{
 
 float computeNeighboorsAverage(vector<float> inputVector);
 float computeNeighboorsVariance(vector<float> inputVector, float neighboorsAverage);
-Mat stdfilt(Mat src, Mat neighborhood);
+Mat computeNeighborhoodVariance(Mat src, Mat neighborhood);
 void findLocalMaximas(Mat inputImage, Mat *s1SignStatistics, Mat *maxDifferences, vector<LocalMaxima> *localMaximas);
 void computeThresholdT(Mat inputImage, Mat *neighborhoodVariance, vector<LocalMaxima> localMaximas, float *threshold);
 double dsmiQuality(Mat inputImage, float coeficientThreshold);
