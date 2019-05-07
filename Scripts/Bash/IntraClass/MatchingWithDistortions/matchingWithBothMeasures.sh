@@ -41,16 +41,16 @@ python ../../Python/check_for_two_ocurrences.py /home/vavieira/UnB/TCC/IrisDatab
 # to perform matching
 echo "Generating matching files"
 # warsaw
-python ../../Python/generate_interclass_matching_file.py ~/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/DistortionFiles/warsaw_test_all_dsmi_fce.txt /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/DistortionFiles/warsaw_matching_test_all_dsmi_fce.txt
+python ../../Python/generate_intraclass_matching_file.py ~/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/DistortionFiles/warsaw_test_all_dsmi_fce.txt /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/DistortionFiles/warsaw_intra_matching_test_all_dsmi_fce.txt
 
 # miche
-python ../../Python/generate_interclass_matching_file.py ~/UnB/TCC/IrisDatabases/MICHE/DistortionFiles/miche_test_all_dsmi_fce.txt ~/UnB/TCC/IrisDatabases/MICHE/DistortionFiles/miche_matching_test_all_dsmi_fce.txt
+python ../../Python/generate_intraclass_matching_file.py ~/UnB/TCC/IrisDatabases/MICHE/DistortionFiles/miche_test_all_dsmi_fce.txt ~/UnB/TCC/IrisDatabases/MICHE/DistortionFiles/miche_intra_matching_test_all_dsmi_fce.txt
 
 # ubirisv1
-python ../../Python/generate_interclass_matching_file.py ~/UnB/TCC/IrisDatabases/UBIRISv1/DistortionFiles/ubirisv1_test_all_dsmi_fce.txt ~/UnB/TCC/IrisDatabases/UBIRISv1/DistortionFiles/ubirisv1_matching_test_all_dsmi_fce.txt
+python ../../Python/generate_intraclass_matching_file.py ~/UnB/TCC/IrisDatabases/UBIRISv1/DistortionFiles/ubirisv1_test_all_dsmi_fce.txt ~/UnB/TCC/IrisDatabases/UBIRISv1/DistortionFiles/ubirisv1_intra_matching_test_all_dsmi_fce.txt
 
 # ubirisv2
-python ../../Python/generate_interclass_matching_file.py ~/UnB/TCC/IrisDatabases/UBIRISv2/DistortionFiles/ubirisv2_test_all_dsmi_fce.txt ~/UnB/TCC/IrisDatabases/UBIRISv2/DistortionFiles/ubirisv2_matching_test_all_dsmi_fce.txt
+python ../../Python/generate_intraclass_matching_file.py ~/UnB/TCC/IrisDatabases/UBIRISv2/DistortionFiles/ubirisv2_test_all_dsmi_fce.txt ~/UnB/TCC/IrisDatabases/UBIRISv2/DistortionFiles/ubirisv2_intra_matching_test_all_dsmi_fce.txt
 
 ##################################################################################################################
 
@@ -61,15 +61,15 @@ echo "Performing matching"
 cd ~/UnB/TCC/IrisDatabases/Test-Osiris/
 
 # warsaw
-~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./Warsaw/Matching_Both_Distortions/
+~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./Warsaw/Matching_Intra_Both_Distortions/
 
 # miche
-~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./MICHE/Matching_Both_Distortions/
+~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./MICHE/Matching_Intra_Both_Distortions/
 
 # ubirisv1
-~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./UBIRISv1/Matching_Both_Distortions/
+~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./UBIRISv1/Matching_Intra_Both_Distortions/
 
 # ubirisv2
-~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./UBIRISv2/Matching_Both_Distortions/
+~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./UBIRISv2/Matching_Intra_Both_Distortions/
 
 ##################################################################################################################

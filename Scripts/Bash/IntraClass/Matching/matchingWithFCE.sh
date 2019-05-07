@@ -4,7 +4,6 @@
 # alliris recognition from OSIRISv4.1 using the FCE quality measure
 
 ################################GENERATING FILES################################################################# 
-#Generating files with all the files that has a FCE value higher than the computed threshold = 0.7158462545478076 (0.71)
 
 # warsaw
 python ../../Python/compare_file_measures.py ~/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/NoDistortionFiles/warsaw_test_fce_stats.txt /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/NoDistortionFiles/warsaw_test_fce.txt 0.71
@@ -25,16 +24,16 @@ python ../../Python/compare_file_measures.py ~/UnB/TCC/IrisDatabases/UBIRISv2/No
 # to perform matching
 
 # warsaw
-python ../../Python/generate_interclass_matching_file.py ~/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/NoDistortionFiles/warsaw_test_fce.txt /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/NoDistortionFiles/warsaw_matching_test_fce.txt
+python ../../Python/generate_intraclass_matching_file.py ~/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/NoDistortionFiles/warsaw_test_fce.txt /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/NoDistortionFiles/warsaw_intra_matching_test_fce.txt
 
 # miche
-python ../../Python/generate_interclass_matching_file.py ~/UnB/TCC/IrisDatabases/MICHE/NoDistortionFiles/miche_test_fce.txt ~/UnB/TCC/IrisDatabases/MICHE/NoDistortionFiles/miche_matching_test_fce.txt
+python ../../Python/generate_intraclass_matching_file.py ~/UnB/TCC/IrisDatabases/MICHE/NoDistortionFiles/miche_test_fce.txt ~/UnB/TCC/IrisDatabases/MICHE/NoDistortionFiles/miche_intra_matching_test_fce.txt
 
 # ubirisv1
-python ../../Python/generate_interclass_matching_file.py ~/UnB/TCC/IrisDatabases/UBIRISv1/NoDistortionFiles/ubirisv1_test_fce.txt ~/UnB/TCC/IrisDatabases/UBIRISv1/NoDistortionFiles/ubirisv1_matching_test_fce.txt
+python ../../Python/generate_intraclass_matching_file.py ~/UnB/TCC/IrisDatabases/UBIRISv1/NoDistortionFiles/ubirisv1_test_fce.txt ~/UnB/TCC/IrisDatabases/UBIRISv1/NoDistortionFiles/ubirisv1_intra_matching_test_fce.txt
 
 # ubirisv2
-python ../../Python/generate_interclass_matching_file.py ~/UnB/TCC/IrisDatabases/UBIRISv2/NoDistortionFiles/ubirisv2_test_fce.txt ~/UnB/TCC/IrisDatabases/UBIRISv2/NoDistortionFiles/ubirisv2_matching_test_fce.txt
+python ../../Python/generate_intraclass_matching_file.py ~/UnB/TCC/IrisDatabases/UBIRISv2/NoDistortionFiles/ubirisv2_test_fce.txt ~/UnB/TCC/IrisDatabases/UBIRISv2/NoDistortionFiles/ubirisv2_intra_matching_test_fce.txt
 
 ##################################################################################################################
 

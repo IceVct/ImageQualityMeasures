@@ -26,16 +26,16 @@ python ../../Python/compare_dsmi_fce.py /home/vavieira/UnB/TCC/IrisDatabases/UBI
 # to perform matching
 
 # warsaw
-python ../../Python/generate_interclass_matching_file.py ~/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/NoDistortionFiles/warsaw_test_dsmi_fce.txt /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/NoDistortionFiles/warsaw_matching_test_dsmi_fce.txt
+python ../../Python/generate_intraclass_matching_file.py ~/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/NoDistortionFiles/warsaw_test_dsmi_fce.txt /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/NoDistortionFiles/warsaw_intra_matching_test_dsmi_fce.txt
 
 # miche
-python ../../Python/generate_interclass_matching_file.py ~/UnB/TCC/IrisDatabases/MICHE/NoDistortionFiles/miche_test_dsmi_fce.txt ~/UnB/TCC/IrisDatabases/MICHE/NoDistortionFiles/miche_matching_test_dsmi_fce.txt
+python ../../Python/generate_intraclass_matching_file.py ~/UnB/TCC/IrisDatabases/MICHE/NoDistortionFiles/miche_test_dsmi_fce.txt ~/UnB/TCC/IrisDatabases/MICHE/NoDistortionFiles/miche_intra_matching_test_dsmi_fce.txt
 
 # ubirisv1
-python ../../Python/generate_interclass_matching_file.py ~/UnB/TCC/IrisDatabases/UBIRISv1/NoDistortionFiles/ubirisv1_test_dsmi_fce.txt ~/UnB/TCC/IrisDatabases/UBIRISv1/NoDistortionFiles/ubirisv1_matching_test_dsmi_fce.txt
+python ../../Python/generate_intraclass_matching_file.py ~/UnB/TCC/IrisDatabases/UBIRISv1/NoDistortionFiles/ubirisv1_test_dsmi_fce.txt ~/UnB/TCC/IrisDatabases/UBIRISv1/NoDistortionFiles/ubirisv1_intra_matching_test_dsmi_fce.txt
 
 # ubirisv2
-python ../../Python/generate_interclass_matching_file.py ~/UnB/TCC/IrisDatabases/UBIRISv2/NoDistortionFiles/ubirisv2_test_dsmi_fce.txt ~/UnB/TCC/IrisDatabases/UBIRISv2/NoDistortionFiles/ubirisv2_matching_test_dsmi_fce.txt
+python ../../Python/generate_intraclass_matching_file.py ~/UnB/TCC/IrisDatabases/UBIRISv2/NoDistortionFiles/ubirisv2_test_dsmi_fce.txt ~/UnB/TCC/IrisDatabases/UBIRISv2/NoDistortionFiles/ubirisv2_intra_matching_test_dsmi_fce.txt
 
 ##################################################################################################################
 
@@ -46,15 +46,15 @@ python ../../Python/generate_interclass_matching_file.py ~/UnB/TCC/IrisDatabases
 cd ~/UnB/TCC/IrisDatabases/Test-Osiris/
 
 # warsaw
-~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./Warsaw/Matching_Both/
+~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./Warsaw/Matching_Intra_Both/
 
 # miche
-~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./MICHE/Matching_Both/
+~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./MICHE/Matching_Intra_Both/
 
 # ubirisv1
-~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./UBIRISv1/Matching_Both/
+~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./UBIRISv1/Matching_Intra_Both/
 
 # ubirisv2
-~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./UBIRISv2/Matching_Both/
+~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./UBIRISv2/Matching_Intra_Both/
 
 ##################################################################################################################
