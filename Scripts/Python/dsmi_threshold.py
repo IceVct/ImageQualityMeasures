@@ -43,10 +43,12 @@ def main():
     with open(sys.argv[1], 'r') as f:
         dsmi_values = f.read().splitlines()
 
-    dsmi_values = [float(dsmi) for dsmi in dsmi_values]
+    dsmi_values = [float(dsmi.split(' ')[-1]) for dsmi in dsmi_values]
 
     threshold = otsu(dsmi_values, 100)
     print str(threshold)
+    threshold = np.mean(dsmi_values)
+    print threshold
 
 
 if __name__ == "__main__":

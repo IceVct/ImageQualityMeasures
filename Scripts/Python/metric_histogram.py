@@ -8,6 +8,14 @@ from subprocess import check_output
 
 # python metric_histogram <input_folder> <input_file_no_distortion> <input_file_with_distortion> <distortion_name>
 
+# http://blog.datadive.net/histogram-intersection-for-change-detection/
+def histogram_intersection(h1, h2, bins):
+   bins = np.diff(bins)
+   sm = 0
+   for i in range(len(bins)):
+       sm += min(bins[i]*h1[i], bins[i]*h2[i])
+   return sm
+
 def compute_histogram(input_vector, bins):
     hist = []
     normalized_hist = []
@@ -41,6 +49,9 @@ def main():
 
     distorted_norm_hist, distorted_bins = compute_histogram(distorted_images, bins)
     no_distorted_norm_hist, no_distorted_bins = compute_histogram(no_distorted_images, bins)
+
+    hist_intersection = histogram_intersection(distorted_norm_hist, no_distorted_norm_hist, bins)
+    print hist_intersection
 
     plt.plot(bins[:-1], distorted_norm_hist, marker=',')
     plt.plot(bins[:-1], no_distorted_norm_hist, marker=',')
