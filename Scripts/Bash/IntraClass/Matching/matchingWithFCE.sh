@@ -44,15 +44,15 @@ python ../../Python/generate_intraclass_matching_file.py ~/UnB/TCC/IrisDatabases
 cd ~/UnB/TCC/IrisDatabases/Test-Osiris/
 
 # warsaw
-~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./Warsaw/Matching_FCE/
+~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./Warsaw/Matching_Intra_FCE/
 
 # miche
-~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./MICHE/Matching_FCE/
+~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./MICHE/Matching_Intra_FCE/
 
 # ubirisv1
-~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./UBIRISv1/Matching_FCE/
+~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./UBIRISv1/Matching_Intra_FCE/
 
 # ubirisv2
-~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./UBIRISv2/Matching_FCE/
+~/UnB/TCC/Codigos/Iris_Osiris/src/osiris ./UBIRISv2/Matching_Intra_FCE/
 
 ##################################################################################################################
