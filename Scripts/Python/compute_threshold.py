@@ -4,15 +4,15 @@ import sys
 import numpy as np
 from subprocess import check_output
 
-# Script for computing the DSMI metric threshold, using the databases training set
+# Script for computing both DSMI/FCE metric threshold, using the databases training set
+# Should receive a file with the pattern: "<image_file_name> <score>"
 
 # CODE ADAPTATED FROM A STACK OVERFLOW ONE
 # https://stackoverflow.com/questions/48213278/implementing-otsu-binarization-from-scratch-python
 def otsu(array, nbins):
     n_array = len(array)
     mean_weigth = 1.0/n_array
-    his, bins = np.histogram(array, 100)
-    print bins
+    his, bins = np.histogram(array, nbins)
     final_thresh = -1
     final_value = -1
     for t, bin in enumerate(bins[1:-1]): # This goes from 1 to 254 uint8 range (Pretty sure wont be those values)
