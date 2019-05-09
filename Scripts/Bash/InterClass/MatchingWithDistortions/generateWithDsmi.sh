@@ -36,7 +36,7 @@ cat /home/vavieira/UnB/TCC/IrisDatabases/UBIRISv2/DistortionFiles/ubirisv2_test_
 
 ##################################################################################################################
 
-################################FILTERING AT LEAST TWO SUBJECTS ##################################################
+################################FILTERING AT LEAST TWO IMAGES FROM SUBJECT ##################################################
 # Warsaw
 python /home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/Scripts/Python/check_for_two_ocurrences.py /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/DistortionFiles/ warsaw_test_all_dsmi.txt warsaw
 
@@ -57,15 +57,15 @@ python /home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/Scripts/Python/check_
 # to perform matching
 
 # warsaw
-python /home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/Scripts/Python/generate_interclass_matching_file.py /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/DistortionFiles/warsaw_test_all_dsmi_filtered.txt /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/DistortionFiles/warsaw_matching_test_all_dsmi_filtered.txt
+python /home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/Scripts/Python/generate_interclass_matching_file.py /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/DistortionFiles/warsaw_test_all_dsmi_filtered.txt /home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/DistortionFiles/Inter/warsaw_matching_test_all_dsmi_filtered.txt
 
 # miche
-python /home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/Scripts/Python/generate_interclass_matching_file.py /home/vavieira/UnB/TCC/IrisDatabases/MICHE/DistortionFiles/miche_test_all_dsmi_filtered.txt /home/vavieira/UnB/TCC/IrisDatabases/MICHE/DistortionFiles/miche_matching_test_all_dsmi_filtered.txt
+python /home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/Scripts/Python/generate_interclass_matching_file.py /home/vavieira/UnB/TCC/IrisDatabases/MICHE/DistortionFiles/miche_test_all_dsmi_filtered.txt /home/vavieira/UnB/TCC/IrisDatabases/MICHE/DistortionFiles/Inter/miche_matching_test_all_dsmi_filtered.txt
 
 # ubirisv1
-python /home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/Scripts/Python/generate_interclass_matching_file.py /home/vavieira/UnB/TCC/IrisDatabases/UBIRISv1/DistortionFiles/ubirisv1_test_all_dsmi_filtered.txt /home/vavieira/UnB/TCC/IrisDatabases/UBIRISv1/DistortionFiles/ubirisv1_matching_test_all_dsmi_filtered.txt
+python /home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/Scripts/Python/generate_interclass_matching_file.py /home/vavieira/UnB/TCC/IrisDatabases/UBIRISv1/DistortionFiles/ubirisv1_test_all_dsmi_filtered.txt /home/vavieira/UnB/TCC/IrisDatabases/UBIRISv1/DistortionFiles/Inter/ubirisv1_matching_test_all_dsmi_filtered.txt
 
 # ubirisv2
-python /home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/Scripts/Python/generate_interclass_matching_file.py /home/vavieira/UnB/TCC/IrisDatabases/UBIRISv2/DistortionFiles/ubirisv2_test_all_dsmi_filtered.txt /home/vavieira/UnB/TCC/IrisDatabases/UBIRISv2/DistortionFiles/ubirisv2_matching_test_all_dsmi_filtered.txt
+python /home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/Scripts/Python/generate_interclass_matching_file.py /home/vavieira/UnB/TCC/IrisDatabases/UBIRISv2/DistortionFiles/ubirisv2_test_all_dsmi_filtered.txt /home/vavieira/UnB/TCC/IrisDatabases/UBIRISv2/DistortionFiles/Inter/ubirisv2_matching_test_all_dsmi_filtered.txt
 
 ##################################################################################################################

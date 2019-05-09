@@ -23,14 +23,17 @@ def main():
     # each subject image will be compared with all images from the same subject
     # S means subject
     # MICHE pattern: SSS_...
-    # UBIRISv1 pattern: Sessao_X/SS/...
+    # UBIRISv1 pattern: Img_SSS_...
+    # UBIRISv1_DSMI pattern: Sessao_X/SSS/...
     # UBIRISv2 pattern: CSS_...
     # Warsaw pattern: 00SSleft(right)/...
     with open(sys.argv[2], 'w') as f:
         if selected_database == 'miche' or selected_database == 'ubirisv2':
             [f.write(im1 + ' ' + im2 + '\n') for im1 in images for im2 in images if im1 != im2 and im1.split('_')[0] in im2]
         elif selected_database == 'ubirisv1':
-            [f.write(im1 + ' ' + im2 + '\n') for im1 in images for im2 in images if im1 != im2 and im1.split('/')[1] in im2]
+            [f.write(im1 + ' ' + im2 + '\n') for im1 in images for im2 in images if im1 != im2 and im1.split('_')[1] == im2.split('_')[1]]
+        elif selected_database == 'ubirisv1_dsmi':
+            [f.write(im1 + ' ' + im2 + '\n') for im1 in images for im2 in images if im1 != im2 and im1.split('/')[1] == im2.split('/')[1]]
         elif selected_database == 'warsaw':
             [f.write(im1 + ' ' + im2 + '\n') for im1 in images for im2 in images if im1 != im2 and im1.split('/')[0] in im2]
 
