@@ -13,6 +13,9 @@ def main():
         raise ValueError('Only 3 arguments must be passed!')
     
     selected_database = sys.argv[3].lower()
+
+    print selected_database
+    
     # reading the files
     with open(sys.argv[1], 'r') as f:
         images = f.read().splitlines()
