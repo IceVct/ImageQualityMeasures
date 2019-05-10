@@ -18,13 +18,14 @@ map_file = sys.argv[6] if len(sys.argv) == 7 else ''
 
 # IF THE DATABASE IS WARSAW, THEN ITS A SPECIAL CASE
 special_case_dict = {}
-if database.lower() == 'warsaw':
-    with open('/home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/%s.txt' % map_file, "r") as f:
+extra_folder = 'DistortionFiles' if 'distortions' in map_file else 'NoDistortionFiles'
+if database.lower() == 'warsaw' and map_file != '':
+    with open('/home/vavieira/UnB/TCC/IrisDatabases/Warsaw-BioBase-Smartphone-Iris-v1.0/%s/%s.txt' % (extra_folder, map_file), "r") as f:
         for line in f:
             (key, value) = line.split("->")
             special_case_dict[key] = value.rstrip()
-elif database.lower() == 'ubirisv1':
-    with open('/home/vavieira/UnB/TCC/IrisDatabases/UBIRISv1/%s.txt' % map_file, "r") as f:
+elif database.lower() == 'ubirisv1' and map_file != '':
+    with open('/home/vavieira/UnB/TCC/IrisDatabases/UBIRISv1/%s/%s.txt' % (extra_folder, map_file), "r") as f:
         for line in f:
             (key, value) = line.split("->")
             special_case_dict[key] = value.rstrip()
@@ -58,9 +59,14 @@ with open(output_file, "w") as f:
         
         # changing the image file if the database is wasrsaw
         if database.lower() == 'warsaw':
-            image_file = "%s/session1/%s.jpg" % (special_case_dict[image_file], image_file)
+            image_file = "%s/session1/%s.jpg" % (special_case_dict[image_file], image_file) if "jpeg2000" not in image_file else "%s/session1/%s.jp2" % (special_case_dict[image_file], image_file)
         elif database.lower() == 'ubirisv1':
             image_file = "%s/%s.jpg" % (special_case_dict[image_file], image_file) if "jpeg2000" not in image_file else "%s/%s.jp2" % (special_case_dict[image_file], image_file)
+        elif database.lower() == 'miche':
+            image_file = "%s.jpg" % image_file if "jpeg2000" not in image_file else "%s.jp2" % image_file
+        elif database.lower() == 'ubirisv2':
+            image_file = "%s.tiff" % image_file if "jpeg2000" not in image_file else "%s.jp2" % image_file
+
         
         executable = ['python', '/home/vavieira/UnB/TCC/Codigos/ImageQualityMeasures/FeatureCorrelation/main.py', content_normalized_images[i], content_normalized_masks[i], content_circle_params[i]]
         quality = check_output(executable)
