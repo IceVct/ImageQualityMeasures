@@ -37,3 +37,32 @@ Steps that must be followed in order to run the scripts in the right order, from
        graphics aswell;
 
 -------------------------------------------------------------------------------------------------
+
+
+----------------------------What each file means-------------------------------------------------
+Replace <database> by warsaw|miche|ubirisv1|ubirisv2
+- Interclass 
+    - No distortion
+        All: <NoDistortionFiles>/Inter/<database>_<matching_test>
+        DSMI: <NoDistortionFiles>/< <database>_<test_dsmi_stats|test_dsmi|test_dsmi_filtered> | <Inter/<database>_matching_test_dsmi> >
+        FCE: <NoDistortionFiles>/< <database>_<test_fce_stats|test_fce|test_fce_filtered> | <Inter/<database>_matching_test_fce> >
+        Both: <NoDistortionFiles>/< <database>_<test_dsmi_fce|test_dsmi_fce_filtered> | <Inter/<database>_matching_test_dsmi_fce> >
+    - Distorted
+        All: <DistortionFiles>/<database>_<test_all|test_matching_all>
+        DSMI: <DistortionFiles>/< <database>_<test_distortions_dsmi_stats|test_distortions_dsmi|test_all_dsmi|test_all_dsmi_filtered> | <Inter/<database>_matching_test_all_dsmi> >
+        FCE: <DistortionFiles>/< <database>_<test_distortions_fce_stats|test_distortions_fce|test_all_fce|test_all_fce_filtered> | <Inter/<database>_matching_test_all_fce> >
+        Both: <DistortionFiles>/< <database>_<test_all_dsmi_fce|test_all_dsmi_fce_filtered> | <Inter/<database>_matching_test_all_dsmi_fce> >
+
+- Intraclass
+    - No distortion
+        All: <DistortionFiles>/Intra/<database>_<intra_matching_test>
+        DSMI: <NoDistortionFiles>/Intra/<database>_<intra_matching_test_dsmi>
+        FCE: <NoDistortionFiles>/Intra/<database>_<intra_matching_test_fce>
+        Both: <NoDistortionFiles>/Intra/<database>_<intra_matching_test_dsmi_fce>
+    - Distorted
+        All: <DistortionFiles>/<database>_<intra_test_matching_all>
+        DSMI: <NoDistortionFiles>/Intra/<database>_<intra_matching_test_all_dsmi>
+        FCE: <NoDistortionFiles>/Intra/<database>_<intra_matching_test_all_fce>
+        Both: <NoDistortionFiles>/Intra/<database>_<intra_matching_test_all_dsmi_fce>
+
+--------------------------------------------------------------------------------------------------
