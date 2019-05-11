@@ -14,7 +14,7 @@ import sys
 #   <input_folder> <database/NoDistortionFiles|DistortionFiles/Inter|Intra>
 #   <all_label_file> <dsmi_label_file> <fce_label_file> <both_label_file>
 #   <all_result_file> <dsmi_result_file> <fce_result_file> <both_result_file>
-#   <output_image_folder> <should_plot>
+#   <output_image_folder> <output_image_file> <should_plot>
 
 def compute_daugman_index(hamming_distance_values, threshold):
     matching = [hd <= threshold for hd in hamming_distance_values]
@@ -32,7 +32,7 @@ def compute_daugman_index(hamming_distance_values, threshold):
 def main():
 
     amount_arguments = len(sys.argv)
-    if amount_arguments < 13 and amount_arguments > 13:
+    if amount_arguments < 14 and amount_arguments > 14:
         raise ValueError('Invalid amount of arguments! 12 must be passed')
 
     input_folder = sys.argv[1]
