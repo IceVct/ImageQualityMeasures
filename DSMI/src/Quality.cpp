@@ -115,8 +115,6 @@ void computeThresholdT(Mat inputImage, vector<LocalMaxima> localMaximas, float *
     int row = 0, col = 0;
     int amountMaximas = localMaximas.size();
 
-    cout << "maximas = " << amountMaximas << endl;
-
     for(int i = 0; i < amountMaximas; i++){
         row = localMaximas[i].x;
         col = localMaximas[i].y;
@@ -179,11 +177,6 @@ double dsmiQuality(Mat inputImage, float coeficientThreshold){
     // Comparing the max difference of each pixel to the threshold 
     S2 = (T > maxDifferences)/255;
     S2.convertTo(S2, CV_32S);
-
-    // cout << S1 << endl;
-    // cout << S2 << endl;
-    // cout << maxDifferences << endl;
-    cout << T << endl;
 
     // Computing the statistics of the coincidence pattern of the sign S1 and magnitude S2
     S = S1 & S2;
