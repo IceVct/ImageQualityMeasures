@@ -89,7 +89,6 @@ void findLocalMaximas(Mat inputImage, Mat *s1SignStatistics, Mat *maxDifferences
 	for (int i = 1; i < rows - 1; i++)
 		for (int j = 1; j < cols - 1; j++){
             if (inputImage.at<float>(i, j) > maximas.at<float>(i, j)){
-                // tempMaxDiffs.at<float>(i - 1, j - 1) = maxDiffs.at<float>(i, j);
                 tempS1.at<int>(i - 1, j - 1) = 1;
                 tmpLocalMaxima.x = i;
                 tmpLocalMaxima.y = j;
@@ -115,6 +114,8 @@ void computeThresholdT(Mat inputImage, vector<LocalMaxima> localMaximas, float *
     vector<float> neighboors(4);
     int row = 0, col = 0;
     int amountMaximas = localMaximas.size();
+
+    cout << "maximas = " << amountMaximas << endl;
 
     for(int i = 0; i < amountMaximas; i++){
         row = localMaximas[i].x;
@@ -179,6 +180,10 @@ double dsmiQuality(Mat inputImage, float coeficientThreshold){
     S2 = (T > maxDifferences)/255;
     S2.convertTo(S2, CV_32S);
 
+    // cout << S1 << endl;
+    // cout << S2 << endl;
+    // cout << maxDifferences << endl;
+    cout << T << endl;
 
     // Computing the statistics of the coincidence pattern of the sign S1 and magnitude S2
     S = S1 & S2;

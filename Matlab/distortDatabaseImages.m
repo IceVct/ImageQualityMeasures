@@ -26,6 +26,8 @@ for i = 1:amountImages
    outputFilename = [folder database extraFolder];
    im = imread(imageFilename); 
    % Generating the distortions and saving the image
+%    s = strcat(imagename, '_histspecification', '.', extension);
+%    imwrite(histogramSpecification(im, 8), [outputFilename s{1}]);
    for j = 1:4
        s = strcat(imagename, '_gaussian', num2str(gaussian(j)), '.', extension);
        fprintf(fidOut, '%s\n', s{1});
