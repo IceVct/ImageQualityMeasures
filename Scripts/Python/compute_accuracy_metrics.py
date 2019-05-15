@@ -33,7 +33,7 @@ def main():
 
     amount_arguments = len(sys.argv)
     if amount_arguments < 14 and amount_arguments > 14:
-        raise ValueError('Invalid amount of arguments! 12 must be passed')
+        raise ValueError('Invalid amount of arguments! 13 must be passed')
 
     input_folder = sys.argv[1]
     database = sys.argv[2]

@@ -5,6 +5,7 @@
 int main(int argsc, char *argsv[]){
 
 	Mat inputImage;
+	Mat skin;
 	Mat grayScaleImage;
 
 	if(argsc < 2){

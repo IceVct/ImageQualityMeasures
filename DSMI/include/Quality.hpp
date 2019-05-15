@@ -22,7 +22,6 @@ typedef struct maximas{
     int y;
 }LocalMaxima;
 
-
 float computeNeighboorsAverage(vector<float> inputVector);
 float computeNeighboorsVariance(vector<float> inputVector, float neighboorsAverage);
 Mat computeNeighborhoodVariance(Mat src, Mat neighborhood);

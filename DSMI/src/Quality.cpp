@@ -89,7 +89,6 @@ void findLocalMaximas(Mat inputImage, Mat *s1SignStatistics, Mat *maxDifferences
 	for (int i = 1; i < rows - 1; i++)
 		for (int j = 1; j < cols - 1; j++){
             if (inputImage.at<float>(i, j) > maximas.at<float>(i, j)){
-                // tempMaxDiffs.at<float>(i - 1, j - 1) = maxDiffs.at<float>(i, j);
                 tempS1.at<int>(i - 1, j - 1) = 1;
                 tmpLocalMaxima.x = i;
                 tmpLocalMaxima.y = j;
@@ -178,7 +177,6 @@ double dsmiQuality(Mat inputImage, float coeficientThreshold){
     // Comparing the max difference of each pixel to the threshold 
     S2 = (T > maxDifferences)/255;
     S2.convertTo(S2, CV_32S);
-
 
     // Computing the statistics of the coincidence pattern of the sign S1 and magnitude S2
     S = S1 & S2;
