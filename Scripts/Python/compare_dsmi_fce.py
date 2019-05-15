@@ -18,8 +18,8 @@ database = sys.argv[5] if len(sys.argv) == 6 else '.'
 with open("%s%s" % (input_folder, dsmi_file), "r") as f:
     content_dsmi_file = f.read().splitlines()
 
-if database.lower() != 'warsaw':
-    content_dsmi_file = [f.split('/')[-1].split('.')[0] for f in content_dsmi_file]
+# if database.lower() != 'warsaw':
+#     content_dsmi_file = [f.split('/')[-1].split('.')[0] for f in content_dsmi_file]
 
 with open("%s%s" % (input_folder, fce_file), "r") as f:
     content_fce_file = f.read().splitlines()
