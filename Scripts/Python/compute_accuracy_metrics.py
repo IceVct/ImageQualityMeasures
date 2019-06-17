@@ -23,7 +23,7 @@ def compute_class_variance(hd, labels, type_class, kind_of_test, output_dir):
     mean = np.mean(class_hd)
     std_deviation = np.std(class_hd)
     variance = np.var(class_hd)
-    dof = np.ceil((mean*(1 - mean))/variance)
+    dof = np.round((mean*(1 - mean))/variance)
 
     if type_class == 1:
         fig, ax = pyplot.subplots()
