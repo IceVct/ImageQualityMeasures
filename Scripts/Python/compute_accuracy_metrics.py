@@ -17,14 +17,37 @@ import sys
 
 # Function that computs class variances depending on the type parameter
 # type: 0 or 1, where 0 is intraclass and 1 interclass
-def compute_class_variance(hd, labels, type_class):
+def compute_class_variance(hd, labels, type_class, kind_of_test, output_dir):
     class_hd = [hd[index] for index, label in enumerate(labels) if label == type_class]
 
     mean = np.mean(class_hd)
     std_deviation = np.std(class_hd)
     variance = np.var(class_hd)
+    dof = np.ceil((mean*(1 - mean))/variance)
 
-    return mean, variance, std_deviation
+    if type_class == 1:
+        fig, ax = pyplot.subplots()
+        textstr = '\n'.join((
+        r'$\mu=%f$' % (mean, ),
+        r'$\sigma=%f$' % (std_deviation, ),
+        'GDL=%d' % (dof, )))
+
+        ax.hist(class_hd, bins='auto')
+        # these are matplotlib.patch.Patch properties
+        props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+
+        # place a text box in upper left in axes coords
+        ax.text(0.05, 0.95, textstr, transform=ax.transAxes, fontsize=14,
+        verticalalignment='top', bbox=props)
+        plot_title = "Comparacoes Interclasse"
+        pyplot.title(plot_title)
+        pyplot.ylabel('Frequencia')
+        pyplot.xlabel('Distancia Hamming')
+        fig.savefig('%s_%s_inter.png' % (output_dir, kind_of_test))
+        # pyplot.show()
+        pyplot.clf()
+
+    return mean, variance, std_deviation, dof
 
 def compute_daugman_index(hamming_distance_values, threshold):
     matching = [hd for hd in hamming_distance_values if hd < threshold]
@@ -177,26 +200,29 @@ def main():
     print 'Both d\' = ', d_both
 
     # Computing inter and intraclass mean, variance and std_deviation
-    all_intra_mean, all_intra_var, all_intra_std = compute_class_variance(hd_results, labels, 0)
-    all_inter_mean, all_inter_var, all_inter_std = compute_class_variance(hd_results, labels, 1)
 
-    dsmi_intra_mean, dsmi_intra_var, dsmi_intra_std = compute_class_variance(dsmi_hd_results, dsmi_labels, 0)
-    dsmi_inter_mean, dsmi_inter_var, dsmi_inter_std = compute_class_variance(dsmi_hd_results, dsmi_labels, 1)
+    output = '%s%s' % (output_image_folder, output_image_file)
 
-    fce_intra_mean, fce_intra_var, fce_intra_std = compute_class_variance(fce_hd_results, fce_labels, 0)
-    fce_inter_mean, fce_inter_var, fce_inter_std = compute_class_variance(fce_hd_results, fce_labels, 1)
+    all_intra_mean, all_intra_var, all_intra_std, all_intra_dof = compute_class_variance(hd_results, labels, 0, 'all', output)
+    all_inter_mean, all_inter_var, all_inter_std, all_inter_dof = compute_class_variance(hd_results, labels, 1, 'all', output)
 
-    both_intra_mean, both_intra_var, both_intra_std = compute_class_variance(both_hd_results, both_labels, 0)
-    both_inter_mean, both_inter_var, both_inter_std = compute_class_variance(both_hd_results, both_labels, 1)
+    dsmi_intra_mean, dsmi_intra_var, dsmi_intra_std, dsmi_intra_dof = compute_class_variance(dsmi_hd_results, dsmi_labels, 0, 'dsmi', output)
+    dsmi_inter_mean, dsmi_inter_var, dsmi_inter_std, dsmi_inter_dof = compute_class_variance(dsmi_hd_results, dsmi_labels, 1, 'dsmi', output)
 
-    print 'All intra mean = %f | var = %f | std = %f' % (all_intra_mean, all_intra_var, all_intra_std)
-    print 'All inter mean = %f | var = %f | std = %f' % (all_inter_mean, all_inter_var, all_inter_std)
-    print 'DSMI intra mean = %f | var = %f | std = %f' % (dsmi_intra_mean, dsmi_intra_var, dsmi_intra_std)
-    print 'DSMI inter mean = %f | var = %f | std = %f' % (dsmi_inter_mean, dsmi_inter_var, dsmi_inter_std)
-    print 'FCE intra mean = %f | var = %f | std = %f' % (fce_intra_mean, fce_intra_var, fce_intra_std)
-    print 'FCE inter mean = %f | var = %f | std = %f' % (fce_inter_mean, fce_inter_var, fce_inter_std)
-    print 'Both intra mean = %f | var = %f | std = %f' % (both_intra_mean, both_intra_var, both_intra_std)
-    print 'Both inter mean = %f | var = %f | std = %f' % (both_inter_mean, both_inter_var, both_inter_std)
+    fce_intra_mean, fce_intra_var, fce_intra_std, fce_intra_dof = compute_class_variance(fce_hd_results, fce_labels, 0, 'fce', output)
+    fce_inter_mean, fce_inter_var, fce_inter_std, fce_inter_dof = compute_class_variance(fce_hd_results, fce_labels, 1, 'fce', output)
+
+    both_intra_mean, both_intra_var, both_intra_std, both_intra_dof  = compute_class_variance(both_hd_results, both_labels, 0, 'both', output)
+    both_inter_mean, both_inter_var, both_inter_std, both_inter_dof = compute_class_variance(both_hd_results, both_labels, 1, 'both', output)
+
+    print 'All intra mean = %f | var = %f | std = %f | dof = %f' % (all_intra_mean, all_intra_var, all_intra_std, all_intra_dof)
+    print 'All inter mean = %f | var = %f | std = %f | dof = %f' % (all_inter_mean, all_inter_var, all_inter_std, all_inter_dof)
+    print 'DSMI intra mean = %f | var = %f | std = %f | dof = %f' % (dsmi_intra_mean, dsmi_intra_var, dsmi_intra_std, dsmi_intra_dof)
+    print 'DSMI inter mean = %f | var = %f | std = %f | dof = %f' % (dsmi_inter_mean, dsmi_inter_var, dsmi_inter_std, dsmi_inter_dof)
+    print 'FCE intra mean = %f | var = %f | std = %f | dof = %f' % (fce_intra_mean, fce_intra_var, fce_intra_std, fce_intra_dof)
+    print 'FCE inter mean = %f | var = %f | std = %f | dof = %f' % (fce_inter_mean, fce_inter_var, fce_inter_std, fce_inter_dof)
+    print 'Both intra mean = %f | var = %f | std = %f | dof = %f' % (both_intra_mean, both_intra_var, both_intra_std, both_intra_dof)
+    print 'Both inter mean = %f | var = %f | std = %f | dof = %f' % (both_inter_mean, both_inter_var, both_inter_std, both_inter_dof)
 
     with open('%s%s.txt' % (output_image_folder, output_image_file), 'w') as f:
         f.write('AUC: %.3f\n' % auc)
@@ -211,14 +237,14 @@ def main():
         f.write('DSMI d\' = %.3f\n' % d_dsmi)
         f.write('FCE d\' = %.3f\n' % d_fce)
         f.write('Both d\' = %.3f\n' % d_both)
-        f.write('All intra mean = %f | var = %f | std = %f\n' % (all_intra_mean, all_intra_var, all_intra_std))
-        f.write('All inter mean = %f | var = %f | std = %f\n' % (all_inter_mean, all_inter_var, all_inter_std))
-        f.write('DSMI intra mean = %f | var = %f | std = %f\n' % (dsmi_intra_mean, dsmi_intra_var, dsmi_intra_std))
-        f.write('DSMI inter mean = %f | var = %f | std = %f\n' % (dsmi_inter_mean, dsmi_inter_var, dsmi_inter_std))
-        f.write('FCE intra mean = %f | var = %f | std = %f\n' % (fce_intra_mean, fce_intra_var, fce_intra_std))
-        f.write('FCE inter mean = %f | var = %f | std = %f\n' % (fce_inter_mean, fce_inter_var, fce_inter_std))
-        f.write('Both intra mean = %f | var = %f | std = %f\n' % (both_intra_mean, both_intra_var, both_intra_std))
-        f.write('Both inter mean = %f | var = %f | std = %f\n' % (both_inter_mean, both_inter_var, both_inter_std))
+        f.write('All intra mean = %f | var = %f | std = %f | dof = %f' % (all_intra_mean, all_intra_var, all_intra_std, all_intra_dof))
+        f.write('All inter mean = %f | var = %f | std = %f | dof = %f' % (all_inter_mean, all_inter_var, all_inter_std, all_inter_dof))
+        f.write('DSMI intra mean = %f | var = %f | std = %f | dof = %f' % (dsmi_intra_mean, dsmi_intra_var, dsmi_intra_std, dsmi_intra_dof))
+        f.write('DSMI inter mean = %f | var = %f | std = %f | dof = %f' % (dsmi_inter_mean, dsmi_inter_var, dsmi_inter_std, dsmi_inter_dof))
+        f.write('FCE intra mean = %f | var = %f | std = %f | dof = %f' % (fce_intra_mean, fce_intra_var, fce_intra_std, fce_intra_dof))
+        f.write('FCE inter mean = %f | var = %f | std = %f | dof = %f' % (fce_inter_mean, fce_inter_var, fce_inter_std, fce_inter_dof))
+        f.write('Both intra mean = %f | var = %f | std = %f | dof = %f' % (both_intra_mean, both_intra_var, both_intra_std, both_intra_dof))
+        f.write('Both inter mean = %f | var = %f | std = %f | dof = %f' % (both_inter_mean, both_inter_var, both_inter_std, both_inter_dof))
 
 
     pyplot.plot(thresholds[1:], fnr[1:], marker=',')
@@ -230,7 +256,7 @@ def main():
     pyplot.legend(['FPR', 'FNR', 'EER=%.3f' % eer], loc='center right')
     pyplot.ylabel('Taxa de Erro')
     pyplot.xlabel('Limiar')
-    pyplot.savefig('%s%s_all_eer.png' % (output_image_folder, output_image_file))
+    pyplot.savefig('%s_all_eer.png' % output)
     if should_plot:
         pyplot.show()
     pyplot.clf()
@@ -242,7 +268,7 @@ def main():
     pyplot.legend(['FPR', 'FNR', 'EER=%.3f' % dsmi_eer], loc='center right')
     pyplot.ylabel('Taxa de Erro')
     pyplot.xlabel('Limiar')
-    pyplot.savefig('%s%s_dsmi_eer.png' % (output_image_folder, output_image_file))
+    pyplot.savefig('%s_dsmi_eer.png' % output)
     if should_plot:
         pyplot.show()
     pyplot.clf()
@@ -254,7 +280,7 @@ def main():
     pyplot.legend(['FPR', 'FNR', 'EER=%.3f' % fce_eer], loc='center right')
     pyplot.ylabel('Taxa de Erro')
     pyplot.xlabel('Limiar')
-    pyplot.savefig('%s%s_fce_eer.png' % (output_image_folder, output_image_file))
+    pyplot.savefig('%s_fce_eer.png' % output)
     if should_plot:
         pyplot.show()
     pyplot.clf()
@@ -266,7 +292,7 @@ def main():
     pyplot.legend(['FPR', 'FNR', 'EER=%.3f' % both_eer], loc='center right')
     pyplot.ylabel('Taxa de Erro')
     pyplot.xlabel('Limiar')
-    pyplot.savefig('%s%s_both_eer.png' % (output_image_folder, output_image_file))
+    pyplot.savefig('%s_both_eer.png' % output)
     if should_plot:
         pyplot.show()
     pyplot.clf()
@@ -278,7 +304,7 @@ def main():
     pyplot.legend(['Sem,AUC=%.3f' % auc, 'DSMI,AUC=%.3f' % dsmi_auc, 'FCE,AUC=%.3f' % fce_auc, 'Ambas,AUC=%.3f' % both_auc], loc='lower right')
     pyplot.ylabel('TPR')
     pyplot.xlabel('FPR')
-    pyplot.savefig('%s%s_auc.png' % (output_image_folder, output_image_file))
+    pyplot.savefig('%s_auc.png' % output)
     if should_plot:
         pyplot.show()
     pyplot.clf()
