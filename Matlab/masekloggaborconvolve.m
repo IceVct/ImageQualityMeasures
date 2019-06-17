@@ -55,6 +55,12 @@ filter = logGabor;
 %     plot(filter);pause;
 
 filtersum = filtersum+filter;
+x = radius;
+x(152:300) = 0;
+
+plot(x, filtersum);
+xlabel('Frequência'); 
+ylabel('Amplitude');
 % for each row of the input image, do the convolution, back transform
 for r = 1:rows	% For each row
     
