@@ -70,9 +70,11 @@ def compute_daugman_index(hamming_distance_values, threshold, output, kind_of_te
             variance_matching = np.var(matching)
             variance_non_matching = np.var(non_matching)
 
-            daugman_decidability = abs(mean_matching - mean_non_matching) / mth.sqrt(0.5 * (variance_matching + variance_non_matching))
+            daugman_decidability = np.abs(mean_matching - mean_non_matching) / np.sqrt(0.5 * (variance_matching + variance_non_matching))
 
             f.write("Threshold = %f\n" % t)
+            f.write("N mean matching = %d\n" % len(matching))
+            f.write("N mean non_matching = %d\n" % len(non_matching))
             f.write("Mean matching = %f\n" % mean_matching)
             f.write("Mean non_matching = %f\n" % mean_non_matching)
             f.write("Variance matching = %f\n" % variance_matching)
